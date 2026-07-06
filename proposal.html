@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VRL Business Maps | Prince Amirii</title>
+<title>VRL Business Maps | Verified Client</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -239,18 +239,18 @@
     <img src="brand/vrl-mark.png" alt="VRL" onerror="this.style.display='none'">
     <div>
       <div class="t1">VRL <b>Business Maps</b></div>
-      <div class="label t2">Prince Amirii Infrastructure Proposal</div>
+      <div class="label t2">Verified Client Infrastructure Proposal</div>
     </div>
   </div>
   <div class="spacer"></div>
   
-  <a href="amirii_client_dashboard.html" style="background:var(--accent); color:white; padding:10px 18px; border-radius:6px; font-family:var(--font-mono); font-size:11px; text-decoration:none; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; transition:background 0.2s; box-shadow:0 4px 12px rgba(255,106,0,0.2); margin-right: 2rem;" onmouseover="this.style.background='var(--accent-soft)'" onmouseout="this.style.background='var(--accent)'">Live Campaign Tracker →</a>
+  <a href="client_dashboard.html" style="background:var(--accent); color:white; padding:10px 18px; border-radius:6px; font-family:var(--font-mono); font-size:11px; text-decoration:none; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; transition:background 0.2s; box-shadow:0 4px 12px rgba(255,106,0,0.2); margin-right: 2rem;" onmouseover="this.style.background='var(--accent-soft)'" onmouseout="this.style.background='var(--accent)'">Live Campaign Tracker →</a>
   
   <div class="hint"><b>Drag</b> to pan &nbsp;·&nbsp; <b>scroll</b> to zoom &nbsp;·&nbsp; <b>click a node</b> for detail</div>
   
   <div class="user-menu">
     <div class="user-details">
-      <div class="user-name">Prince Amirii</div>
+      <div class="user-name">Verified Client</div>
       <div class="user-role">Client Portal</div>
     </div>
     <div class="user-avatar">PA</div>
@@ -300,11 +300,11 @@
 
 <script>
 /* =====================================================================
-   CUSTOM MAP DATA FOR PRINCE AMIRII
+   CUSTOM MAP DATA FOR VERIFIED CLIENT
    ===================================================================== */
 const MAPS = {
-  "amirii-offering": {
-    title: "Prince Amirii Enterprise",
+  "client-offering": {
+    title: "Verified Client Enterprise",
     subtitle: "Strategic Tech, Audio & Marketing Infrastructure Proposal",
     status: "live",
     defaultView: "ecosystem",
@@ -314,8 +314,8 @@ const MAPS = {
         blurb: "Think like a business, you're actually a start-up. We provide the analytics, architecture, and predictive growth tools to map your entire sector—acting as the Palantir for your entertainment enterprise.",
         canvas: [1100, 700],
         nodes: [
-          { id:"amirii", x:450, y:250, kind:"hub", label:"Prince Amirii", sub:"The Visionary Core", detail:"The central brand directing Music, Tech (Zeal), and Live Events.",
-            meta:[{k:"Ownership", v:"100% Retained by Prince Amirii"}]
+          { id:"client", x:450, y:250, kind:"hub", label:"Verified Client", sub:"The Visionary Core", detail:"The central brand directing Music, Tech (Zeal), and Live Events.",
+            meta:[{k:"Ownership", v:"100% Retained by Verified Client"}]
           },
           
           { id:"music", x:100, y:80, kind:"party", label:"Music / Label Suite", sub:"Releases & Catalogue", detail:"Your music catalogue, upcoming singles, and the UpperRoom brand." },
@@ -334,9 +334,9 @@ const MAPS = {
           },
         ],
         edges: [
-          {from:"amirii", to:"music", label:"directs"},
-          {from:"amirii", to:"tech", label:"directs"},
-          {from:"amirii", to:"events", label:"directs"},
+          {from:"client", to:"music", label:"directs"},
+          {from:"client", to:"tech", label:"directs"},
+          {from:"client", to:"events", label:"directs"},
           {from:"duardo", to:"music", label:"powers audio", curve:-40},
           {from:"vrl", to:"tech", label:"powers platform", curve:40},
           {from:"visiosend", to:"events", label:"fuels ticket sales", curve:0},
@@ -348,7 +348,7 @@ const MAPS = {
         blurb: "Tony Duardo Creative Lab and VRL provide the sonic excellence, label infrastructure, and publishing back-office.",
         canvas: [1100, 640],
         nodes: [
-          { id:"catalog", x:450, y:80, kind:"hub", label:"UpperRoom Music", sub:"The Label / Catalog", detail:"The central catalog for Amirii releases." },
+          { id:"catalog", x:450, y:80, kind:"hub", label:"UpperRoom Music", sub:"The Label / Catalog", detail:"The central catalog for Client releases." },
           { id:"portal", x:100, y:80, kind:"step", label:"VisioArtist Portal", sub:"Central Hub", detail:"Your personalized dashboard for all music data, insights, and campaign tracking.", tools:[{name:"VisioArtist",t:"visio"}] },
           { id:"llm", x:800, y:80, kind:"step", label:"Artist LLM", sub:"Fan Engagement", detail:"Conversational AI trained on you. Talk to fans on the web or WhatsApp about albums and songs.", tools:[{name:"Artist LLM",t:"vrl"}] },
           
@@ -423,7 +423,7 @@ const MAPS = {
         blurb: "From underwriting to predictive modelling, we map out your entire sector so you can act as a founder and drive growth internally with what you own.",
         canvas: [1000, 480],
         nodes: [
-          { id:"amirii_exec", x:400, y:60, kind:"hub", label:"Executive Board", sub:"Prince Amirii", detail:"Your core decision-making team." },
+          { id:"client_exec", x:400, y:60, kind:"hub", label:"Executive Board", sub:"Verified Client", detail:"Your core decision-making team." },
           
           { id:"intel", x:50, y:220, kind:"step", label:"Visio Intel", sub:"Market Signals", detail:"Magazine/newsletter format research, market signals, genre targets, and intelligence.", tools:[{name:"Visio Intel",t:"visio"}] },
           { id:"admin", x:300, y:220, kind:"step", label:"VRL Administrator", sub:"Reporting & Structure", detail:"Advisory deck, reporting, and business structuring.", tools:[{name:"VRL Administrator",t:"vrl"}] },
@@ -431,10 +431,10 @@ const MAPS = {
           { id:"maps", x:800, y:220, kind:"engine", label:"VRL Business Maps", sub:"Live Architecture", detail:"What you are looking at right now: live visualization of your enterprise.", tools:[{name:"VRL Artist",t:"vrl"}] }
         ],
         edges: [
-          {from:"intel", to:"amirii_exec"},
-          {from:"admin", to:"amirii_exec"},
-          {from:"growth", to:"amirii_exec"},
-          {from:"maps", to:"amirii_exec"}
+          {from:"intel", to:"client_exec"},
+          {from:"admin", to:"client_exec"},
+          {from:"growth", to:"client_exec"},
+          {from:"maps", to:"client_exec"}
         ]
       },
       timeline: {
@@ -941,11 +941,43 @@ window.addEventListener('load', initAgent);
       <p>This architecture is designed to transition you from an artist into a Founder—giving you the predictive models, AI tools, and infrastructure to scale your impact globally.</p>
     </div>
     <div class="wm-footer">
-      <div class="wm-footer-id">ID: VRL-SYS-AMIRII</div>
+      <div class="wm-footer-id">ID: VRL-SYS-CLIENT</div>
       <button class="wm-btn" onclick="closeWelcomeModal()">Enter Business Map &rarr;</button>
     </div>
   </div>
 </div>
 
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const dataBase64 = params.get('data');
+    if (dataBase64) {
+      try {
+        const jsonStr = atob(dataBase64);
+        const payload = JSON.parse(jsonStr);
+        
+        // Hydrate Name
+        if (payload.name) {
+          const userNameEl = document.querySelector('.user-name');
+          if(userNameEl) userNameEl.textContent = payload.name;
+          
+          const avatarEl = document.querySelector('.user-avatar');
+          if(avatarEl) {
+            const initials = payload.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+            avatarEl.textContent = initials;
+          }
+          
+          const titleEl = document.querySelector('.t2');
+          if(titleEl) {
+            titleEl.innerHTML = payload.name + ' Infrastructure Proposal';
+          }
+        }
+        
+      } catch (e) {
+        console.error('Failed to parse client data', e);
+      }
+    }
+  });
+</script>
 </body>
 </html>

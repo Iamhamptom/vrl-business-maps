@@ -422,8 +422,12 @@
           <p class="sub-headline" style="font-size:1.05rem;">We build the tools and instruments to drive catalogue growth. Reaping the benefits of your enterprise requires the right architecture. Before we dive into the enterprise maps, let's establish contact.</p>
           
           <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="fName" class="form-input" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
             <label class="form-label">Email Address</label>
-            <input type="email" id="fEmail" class="form-input" placeholder="amirii@example.com" required>
+            <input type="email" id="fEmail" class="form-input" placeholder="client@example.com" required>
           </div>
           <div class="form-group">
             <label class="form-label">WhatsApp Number</label>
@@ -545,6 +549,12 @@
             <div class="preset-name">Enterprise Pack</div>
             <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Maximum capacity unlocked. Dedicated agent & full engine.</div>
           </button>
+          
+          <button class="preset-btn" onclick="applyPreset('all')">
+            <div class="preset-price">Custom</div>
+            <div class="preset-name">All Services</div>
+            <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Every single service activated for complete custom building.</div>
+          </button>
 
           <div style="margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.5rem;">
             <h4 style="font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-faint); margin-bottom:0.75rem;">Auto-Allocate Custom Budget</h4>
@@ -563,7 +573,7 @@
               <div class="builder-total" id="buildTotal">$1,000</div>
             </div>
             <div>
-              <button class="btn" style="background:var(--accent); color:white; padding:12px 24px;" onclick="triggerUnlockAnimation()">Initialize Architecture &rarr;</button>
+              <button id="payBtn" class="btn" style="background:var(--accent); color:white; padding:12px 24px; min-width: 180px;" onclick="triggerUnlockAnimation()">Generate Blueprint ($1,000) &rarr;</button>
             </div>
           </div>
 
@@ -572,9 +582,9 @@
             <div class="tree-col" id="col-audio">
               <div class="tree-box" id="box-tony_prod" onclick="openServiceModal('tony_prod')" style="cursor: pointer;">
                 <div>
-                  <div class="tree-title">Tony Music Production</div>
+                  <div class="tree-title">Tony Duardo Production Session Booking Fee</div>
                   <div class="tree-val" id="val-tony_prod"></div>
-                  <div class="tree-desc">2 Sessions • Creative Pack • Artwork • Campaign Theme • 50/50 Master Splits</div>
+                  <div class="tree-desc">2 Sessions • Songwriting • Production • Mixing & Mastering • 50/50 Master Splits</div>
                 </div>
                 <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('tony_prod', -100)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('tony_prod', 100)">+</button></div>
               </div>
@@ -688,12 +698,12 @@
     // Service Modal Logic — Full Playbook Details
     const serviceData = {
       tony_prod: {
-        title: "Tony Music Production",
+        title: "Tony Duardo Production Session Booking Fee",
         desc: "Executive-level music production. $1,000 session fee (2 sessions). 50/50 on Master & Publishing ownership (US Tony Duardo / Visio / VRL). Wav/Mp3 master agreement + publishing splits. Tony Duardo listed as non-main artist; main artist costs fee or Tony's team decision.",
         list: [
           "2 Studio Sessions — $1,000 session fee",
           "50/50 Master & Publishing splits (ownership)",
-          "Creative Pack: Artwork, Campaign Theme, Creative Directive",
+          "Songwriting, Production, Mixing & Mastering",
           "Higgsfield Shorts Clips for social",
           "Press Release + Song EPK",
           "Mix / Performance masters (Wav/Mp3)",
@@ -859,23 +869,60 @@
       document.getElementById('serviceModalBg').style.display = 'none';
     }
 
-    // Unlock Animation Logic
+    // Unlock Animation & Code Generation
     function triggerUnlockAnimation() {
+      const name = document.getElementById('fName').value || 'Client';
+      const email = document.getElementById('fEmail').value || '';
+      const phone = document.getElementById('fPhone').value || '';
+      
+      const payload = {
+        name: name,
+        email: email,
+        phone: phone,
+        budgets: budgets
+      };
+      
+      const encoded = btoa(JSON.stringify(payload));
+      const vrlCode = 'VRL-' + encoded;
+      
+      // Inject Modal if it doesn't exist
+      if (!document.getElementById('codeModalBg')) {
+        const modalHtml = `
+          <div id="codeModalBg" class="modal-bg" style="display:none; align-items:center; justify-content:center; z-index:9999;">
+            <div class="glass-panel" style="max-width:500px; padding:3rem; text-align:center; position:relative;">
+              <h2 style="font-size:2rem; margin-bottom:1rem; color:#fff;">Your Ecosystem is Ready</h2>
+              <p style="color:#aaa; margin-bottom:2rem;">Copy this unique architecture code and WhatsApp it to Tony to finalize your setup.</p>
+              
+              <div style="background:rgba(0,0,0,0.5); padding:1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-bottom:1.5rem; word-break:break-all; font-family:monospace; color:#4ade80;">
+                ${vrlCode}
+              </div>
+              
+              <button class="primary-btn w-full" onclick="navigator.clipboard.writeText('${vrlCode}').then(() => alert('Code Copied! Send it on WhatsApp.'))">Copy Code</button>
+              
+              <div class="wm-close" onclick="document.getElementById('codeModalBg').style.display='none'" style="position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: white; padding: 0.5rem;">✕</div>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
+      
       localStorage.setItem('visioTourActive', 'true');
       const overlay = document.getElementById('unlockOverlay');
       overlay.classList.add('active');
       setTimeout(() => {
-        window.location.href = 'amirii_proposal.html';
-      }, 5000);
+        overlay.classList.remove('active');
+        document.getElementById('codeModalBg').style.display = 'flex';
+      }, 2500);
     }
 
     // Stage transition logic
     function nextStage(stageNum) {
       if (stageNum === 2) {
+        const name = document.getElementById('fName').value;
         const email = document.getElementById('fEmail').value;
         const phone = document.getElementById('fPhone').value;
-        if(!email || !phone) {
-          alert('Please enter your email and WhatsApp to continue.');
+        if(!name || !email || !phone) {
+          alert('Please enter your name, email and WhatsApp to continue.');
           return;
         }
       }
@@ -924,7 +971,7 @@
 
     // Budget Builder Logic
     const budgets = {
-      tony_prod: 400, courses: 0, vrl_maps: 20, data_room: 0,
+      tony_prod: 1000, courses: 0, vrl_maps: 20, data_room: 0,
       visiopage: 0, vrl_echo: 180, v_proi: 100, trendwars: 100,
       duardo_llm: 100, visio_bookings: 100, visio_ads: 0
     };
@@ -933,6 +980,7 @@
       let total = 0;
       for (const k in budgets) total += budgets[k];
       document.getElementById('buildTotal').textContent = '$' + total.toLocaleString();
+      document.getElementById('payBtn').innerHTML = 'Generate Blueprint ($' + total.toLocaleString() + ') &rarr;';
 
       const colAudio = budgets.tony_prod + budgets.courses + budgets.vrl_maps + budgets.data_room;
       const colOutreach = budgets.visiopage + budgets.vrl_echo + budgets.v_proi + budgets.trendwars;
@@ -980,10 +1028,12 @@
       if (type === 'consult') {
         Object.assign(budgets, {tony_prod:0, courses:200, vrl_maps:0, data_room:0, visiopage:0, vrl_echo:0, v_proi:0, trendwars:0, duardo_llm:0, visio_bookings:0, visio_ads:0});
       } else if (type === 'starter') {
-        Object.assign(budgets, {tony_prod:400, courses:0, vrl_maps:20, data_room:0, visiopage:0, vrl_echo:180, v_proi:100, trendwars:100, duardo_llm:100, visio_bookings:100, visio_ads:0});
+        Object.assign(budgets, {tony_prod:1000, courses:0, vrl_maps:20, data_room:0, visiopage:0, vrl_echo:180, v_proi:100, trendwars:100, duardo_llm:100, visio_bookings:100, visio_ads:0});
       } else if (type === 'jv') {
         Object.assign(budgets, {tony_prod:1500, courses:0, vrl_maps:20, data_room:100, visiopage:1200, vrl_echo:500, v_proi:280, trendwars:300, duardo_llm:100, visio_bookings:200, visio_ads:800});
       } else if (type === 'enterprise') {
+        Object.assign(budgets, {tony_prod:2000, courses:500, vrl_maps:100, data_room:500, visiopage:2000, vrl_echo:1000, v_proi:1000, trendwars:1000, duardo_llm:400, visio_bookings:500, visio_ads:1000});
+      } else if (type === 'all') {
         Object.assign(budgets, {tony_prod:2000, courses:500, vrl_maps:100, data_room:500, visiopage:2000, vrl_echo:1000, v_proi:1000, trendwars:1000, duardo_llm:400, visio_bookings:500, visio_ads:1000});
       }
       updateTreemap();

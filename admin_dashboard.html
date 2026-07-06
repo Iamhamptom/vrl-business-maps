@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL Executive Admin - Pipeline</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============ VRL BRAND PACK (locked) ============ */
+    :root {
+      --bg:#ffffff; --ink:#0a0a0a; --ink-soft:#4a4a4a; --ink-faint:#888888;
+      --line:#e8e8e8; --line-strong:#cfcfcf;
+      --accent:#ff6a00; --accent-soft:#ff8533;
+      --surface:#ffffff; --surface-hover:#f6f6f6;
+      --font-display:'Space Grotesk','Inter',system-ui,sans-serif;
+      --font-body:'Inter',-apple-system,system-ui,sans-serif;
+      --font-mono:'JetBrains Mono',ui-monospace,monospace;
+      --r:6px; --shadow:0 1px 0 var(--line), 0 8px 24px rgba(10,10,10,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-body);
+      background-color: var(--surface-hover); /* slightly off-white back for dashboard */
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
+    .label, .mono { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-faint); }
+    
+    /* scanner line motif */
+    .scanner-line { display: block; position: relative; width: 48px; height: 3px; background: var(--accent); border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
+    .scanner-line::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 50%, transparent); transform: translateX(-100%); animation: sweep 2.8s cubic-bezier(.4,0,.2,1) infinite; }
+    @keyframes sweep { 0% { transform: translateX(-100%) } 60%, 100% { transform: translateX(100%) } }
+
+    header {
+      padding: 0 4rem;
+      height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    main {
+      padding: 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .dashboard-header {
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* Table styling */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      background: var(--surface-hover);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .badge-paid { background: rgba(13, 148, 136, 0.1); color: #0d9488; }
+    .badge-hot { background: rgba(255, 106, 0, 0.1); color: var(--accent); }
+    .badge-confirmed { background: rgba(11, 61, 145, 0.1); color: #0b3d91; }
+    .badge-pending { background: rgba(225, 6, 0, 0.1); color: #e10600; }
+    
+    .nav-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo" style="display: flex; align-items: center; gap: 12px;">
+      <img src="brand/vrl-mark.png" alt="VRL" onerror="this.src='brand/vrl-lockup.png'" style="height: 34px; width: auto; display: block;" />
+      <div>
+        <div class="t1" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink);">VRL <b style="color: var(--accent);">Admin Dashboard</b></div>
+        <div class="label t2" style="margin-top: 2px;">Executive Control Room</div>
+      </div>
+    </div>
+    <nav class="desktop-nav" style="display: flex; align-items: center;">
+      <a href="index.html" style="text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500; margin-right: 2rem;">&larr; Return Home</a>
+      <a href="offer_funnel.html" style="background: var(--accent); color: white; padding: 10px 18px; border-radius: var(--r); font-family: var(--font-mono); font-size: 11px; text-decoration: none; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,106,0,0.2);">Offer Funnel</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="dashboard-header">
+      <div>
+        <div class="scanner-line"></div>
+        <h1>Current Revenue Pipeline</h1>
+        <p style="color: var(--ink-soft); max-width: 600px; margin-top: 0.5rem;">Overview of all client onboarding, consultations, and high-ticket packages currently in progress.</p>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); text-align: right;">
+        <div style="margin-bottom: 4px;">&bull; Financed Solutions Coming</div>
+        <div style="margin-bottom: 4px;">&bull; (Payment Plans)</div>
+        <div>&bull; Payment Links Ready</div>
+      </div>
+    </div>
+
+    <!-- Decode Client Code Section -->
+    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow); display:flex; gap:1rem; align-items:center;">
+      <div style="flex:1;">
+        <h3 style="font-size:1.1rem; margin-bottom:0.25rem;">Decode Client Transmission</h3>
+        <p style="font-size:0.9rem; color:var(--ink-faint);">Paste the VRL-CODE from WhatsApp to instantly generate their architecture map.</p>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex:2;">
+        <input type="text" id="vrlCodeInput" placeholder="VRL-..." style="flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:4px; font-family:var(--font-mono); font-size:14px;">
+        <button onclick="decodeClientCode()" style="background:var(--ink); color:white; border:none; padding:10px 20px; border-radius:4px; font-weight:600; cursor:pointer; font-family:var(--font-display);">Decode &amp; Generate</button>
+      </div>
+    </div>
+    <script>
+      function decodeClientCode() {
+        const input = document.getElementById('vrlCodeInput').value.trim();
+        if(!input.startsWith('VRL-')) {
+          alert('Invalid code format. Code must start with VRL-');
+          return;
+        }
+        
+        try {
+          const base64 = input.substring(4);
+          const jsonStr = atob(base64);
+          // Test parse to ensure it's valid
+          JSON.parse(jsonStr);
+          window.location.href = 'proposal.html?data=' + encodeURIComponent(base64);
+        } catch (e) {
+          alert('Error decoding client transmission. The code may be corrupted.');
+        }
+      }
+    </script>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-title">Total Active Pipeline</div>
+        <div class="metric-value">$32,600+</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Closed / Paid</div>
+        <div class="metric-value" style="color: #0d9488;">$700</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">Total Leads</div>
+        <div class="metric-value">36</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">30 Days Close Rate</div>
+        <div class="metric-value">TBD</div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Expected Value</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Consults -->
+          <tr>
+            <td style="font-weight: 500;">Lionel</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">R- One</td>
+            <td>$200</td>
+            <td><span class="badge badge-paid">Paid ✅</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Poonam Singh</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Hassan Mohamed</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Iam Naishe</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Tiptack_byo</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Careenien be</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Singer Dubai</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Summer Heynes</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Denisebafuidinsoni</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Lifewithjh</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Wavey Rituals</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500; color: var(--ink-faint);">Prie_nkosazana</td>
+            <td style="color: var(--ink-faint);">-</td>
+            <td><span class="badge badge-pending">⛔ Stopped</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Dj switch</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Yuuka</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Datgyalri</td>
+            <td>$200</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+
+          <!-- High Ticket Divider -->
+          <tr>
+            <td colspan="4" style="background: var(--surface-hover); padding: 2rem 1.5rem 0.5rem; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint);">
+              Enterprise / Packages
+            </td>
+          </tr>
+
+          <tr>
+            <td style="font-weight: 500;">Rahima</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-paid">Paid ✅</span> <span class="badge badge-pending" style="margin-left: 4px;">$500 Pending</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Verified Client 1</td>
+            <td>$1,500</td>
+            <td><span class="badge badge-confirmed">Confirmed</span></td>
+            <td>(Replaced Prince Amiri)</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Mode.Nads</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Layefa</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Vado</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td>(Add Information)</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Skyla Tyla ⭐</td>
+            <td>$3,000 - $5,000</td>
+            <td><span class="badge badge-confirmed">Confirmed</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Charisse C</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-confirmed">Confirmed</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">VIASERI</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">ARTIST LEBO</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">KAIRASTARR</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Oceavne ⭐</td>
+            <td>$1,000</td>
+            <td><span class="badge badge-hot">Hot Lead</span></td>
+            <td>+ Hit Song</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Afriindi P Govender</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">D Sisi</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Helinceti ⭐</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500; color: var(--ink-faint);">Queen NINJA</td>
+            <td style="color: var(--ink-faint);">N/A</td>
+            <td><span class="badge">Unqualified</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">BUNE</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">DJ Raydizz DXB</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Teddy James</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Mixolis</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">The kaneda</td>
+            <td>$1,000</td>
+            <td><span class="badge">In Progress</span></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

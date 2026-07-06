@@ -82,8 +82,11 @@
 
   <div class="container">
     <header>
-      <div class="logo">VRL Enterprise</div>
-      <div class="dash-meta">CLIENT: AMIRII • DEPLOYMENT: ACTIVE</div>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="index.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85rem; font-family: var(--font-mono); border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 4px; transition: 0.2s;">&larr; BACK</a>
+        <div class="logo">VRL Enterprise</div>
+      </div>
+      <div class="dash-meta">CLIENT: VERIFIED • DEPLOYMENT: ACTIVE</div>
     </header>
 
     <h1 class="dash-title">Infrastructure Tracker</h1>
@@ -93,12 +96,12 @@
     <div class="treemap">
       <!-- Column 1 -->
       <div class="tree-col" style="flex-grow: 420;">
-        <div class="tree-box" style="flex-grow: 400;" onclick="openModal('Tony Music Production', 400, 100)">
+        <div class="tree-box" style="flex-grow: 1000;" onclick="openModal('Tony Duardo Production Session Booking Fee', 1000, 100)">
           <div class="progress-fill" id="prog-tony" style="height: 0%;"></div>
           <div>
-            <div class="tree-title">Tony Music Production</div>
-            <div class="tree-val">$400 <span class="status-badge done" id="badge-tony">100%</span></div>
-            <div class="tree-desc">2 Sessions • Creative Pack • Artwork • Campaign Theme</div>
+            <div class="tree-title">Tony Duardo Production Session Booking Fee</div>
+            <div class="tree-val">$1000.00 <span class="status-badge done" id="badge-tony">100%</span></div>
+            <div class="tree-desc">2 Sessions • Songwriting • Production • Mixing & Mastering</div>
           </div>
         </div>
         <div class="tree-box" style="flex-grow: 20;" onclick="openModal('VRL Business Maps', 20, 100)">

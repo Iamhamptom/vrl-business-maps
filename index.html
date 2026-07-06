@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL Business Maps - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============ VRL BRAND PACK (locked) ============ */
+    :root {
+      --bg:#ffffff; --ink:#0a0a0a; --ink-soft:#4a4a4a; --ink-faint:#888888;
+      --line:#e8e8e8; --line-strong:#cfcfcf;
+      --accent:#ff6a00; --accent-soft:#ff8533;
+      --surface:#ffffff; --surface-hover:#f6f6f6;
+      --font-display:'Space Grotesk','Inter',system-ui,sans-serif;
+      --font-body:'Inter',-apple-system,system-ui,sans-serif;
+      --font-mono:'JetBrains Mono',ui-monospace,monospace;
+      --r:6px; --shadow:0 1px 0 var(--line), 0 8px 24px rgba(10,10,10,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 15% 50%, rgba(255, 106, 0, 0.05), transparent 25%), radial-gradient(circle at 85% 30%, rgba(11, 61, 145, 0.08), transparent 25%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
+    .label, .mono { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-faint); }
+    
+    /* scanner line motif */
+    .scanner-line { display: block; position: relative; width: 48px; height: 3px; background: var(--accent); border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
+    .scanner-line::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 50%, transparent); transform: translateX(-100%); animation: sweep 2.8s cubic-bezier(.4,0,.2,1) infinite; }
+    @keyframes sweep { 0% { transform: translateX(-100%) } 60%, 100% { transform: translateX(100%) } }
+
+    header {
+      padding: 0 4rem;
+      height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brand img { height: 32px; }
+    .brand-text { font-size: 0.8rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+    
+    h1 span { color: var(--accent); }
+
+    p.subtitle {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .desktop-nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .desktop-nav a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .desktop-nav a:hover:not(.btn-primary) {
+      color: var(--accent);
+    }
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 900px) {
+      .hero-section {
+        flex-direction: row;
+        align-items: stretch;
+      }
+      .hero-content {
+        flex: 1;
+        padding-right: 2rem;
+      }
+      .hero-image-container {
+        width: 380px;
+        flex-shrink: 0;
+      }
+    }
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--surface);
+      border-color: var(--text-dim);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 6rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      border-radius: 8px;
+    }
+    
+    .feature-card h3 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent); }
+    .feature-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo" style="display: flex; align-items: center; gap: 12px;">
+      <img src="brand/vrl-mark.png" alt="VRL" onerror="this.src='brand/vrl-lockup.png'" style="height: 34px; width: auto; display: block;" />
+      <div>
+        <div class="t1" style="font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink);">VRL <b style="color: var(--accent);">Business Maps</b></div>
+        <div class="label t2" style="margin-top: 2px;">Business Maps Ecosystem</div>
+      </div>
+    </div>
+    <nav class="desktop-nav" style="display: flex; align-items: center; gap: 2rem;">
+      <a href="proposal.html" style="text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500;">Architecture Maps</a>
+      <a href="client_dashboard.html" style="text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500;">Live Tracker</a>
+      <a href="offer_funnel.html" style="background: var(--accent); color: white; padding: 10px 18px; border-radius: var(--r); font-family: var(--font-mono); font-size: 11px; text-decoration: none; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,106,0,0.2);">Get Started &rarr;</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Welcome to <span>VRL.</span></h1>
+        <p class="subtitle" style="font-size: 1.15rem; max-width: 900px; text-align: left;">
+          You have come to the right place. We are going to make great music and a great product, executive produced by Tony Duardo end-to-end — from song creation all the way to going to market. You will work directly with Tony Duardo and his team, with access to a great global network.<br><br>
+          <strong>About Tony Duardo:</strong><br>
+          Tony is a multi-platinum producer, songwriter, and music executive who has generated over 3 billion streams in an impressive 4-year run. He is the founder of HGA, where he has helped build major careers, raised millions of dollars in funding, and successfully run global campaigns. Featured by Billboard and Rolling Stone, his production credits and collaborations span leading African and global artists — including Tyla, Davido, Omah Lay, Uncle Waffles, TxC, and Ciza. He built this very system on his own catalogue first, and now scales it for you.
+        </p>
+        <div class="actions" style="margin-top: 2rem;">
+          <a href="offer_funnel.html" class="btn btn-primary">Initialize Q&A (Start Here)</a>
+          <a href="proposal.html" class="btn btn-secondary">Skip to Architecture Maps</a>
+        </div>
+      </div>
+      <div class="hero-image-container">
+        <img src="tony-duardo-hero.jpg" alt="Tony Duardo" class="hero-photo">
+      </div>
+    </section>
+
+    <div class="features">
+      <div class="feature-card">
+        <h3>1. Intelligence & Data</h3>
+        <p>Your private intelligence hub. We track metrics, competitor moves, and market trends so you can make data-driven decisions via the Data Room & Label Suite.</p>
+      </div>
+      <div class="feature-card">
+        <h3>2. Architecture & Maps</h3>
+        <p>Visual blueprints of your entire operation. Understand your ecosystem at a glance and identify exactly where capital should flow to maximize ROI.</p>
+      </div>
+      <div class="feature-card">
+        <h3>3. Growth Engines</h3>
+        <p>From Visio ADS to V-Proi and TrendWars. All outreach engines activate simultaneously to create maximum market impact and drive massive organic reach.</p>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
