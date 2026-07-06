@@ -161,6 +161,51 @@
       font-weight: 500;
       margin-left: 2rem;
     }
+    .goal-panel {
+      background: #111;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      color: white;
+    }
+    .goal-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 1.5rem;
+    }
+    .goal-title { font-size: 1.5rem; font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
+    .goal-value { font-size: 2.5rem; font-family: var(--font-mono); color: var(--accent); }
+    .progress-track {
+      background: #222; border-radius: 8px; height: 24px; width: 100%;
+      overflow: hidden; display: flex;
+    }
+    .progress-fill-paid { background: #0d9488; height: 100%; transition: width 0.5s; }
+    .progress-fill-pipeline { background: rgba(255,106,0,0.5); height: 100%; transition: width 0.5s; border-right: 2px dashed #ff6a00; }
+    .goal-stats {
+      display: flex; gap: 2rem; margin-top: 1rem; font-family: var(--font-mono); font-size: 13px; color: #888;
+    }
+    .goal-stats span strong { color: white; }
+    
+    .forecasting-engine {
+      margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #333;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+    }
+    .forecast-input {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .forecast-input label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #888; }
+    .forecast-input input {
+      background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 16px; outline: none;
+    }
+    .forecast-input input:focus { border-color: var(--accent); }
+    .forecast-result {
+      background: var(--accent); color: white; padding: 1rem; border-radius: 8px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; font-family: var(--font-display); box-shadow: 0 4px 15px rgba(255,106,0,0.3);
+    }
+    .forecast-result .big { font-size: 2rem; font-weight: bold; }
+    .forecast-result .small { font-size: 0.9rem; opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -224,6 +269,55 @@
       }
     </script>
 
+    <!-- 30 DAY $250K GOAL TRACKER -->
+    <div class="goal-panel">
+      <div class="goal-header">
+        <div class="goal-title">30-Day Mission: Goal Tracker</div>
+        <div class="goal-value">$250,000</div>
+      </div>
+      
+      <!-- Paid: 1700 / 250000 = 0.68% -->
+      <!-- Pipeline: 32800 / 250000 = 13.12% -->
+      <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($32,800)">
+        <div class="progress-fill-paid" style="width: 0.68%;"></div>
+        <div class="progress-fill-pipeline" style="width: 13.12%;"></div>
+      </div>
+      
+      <div class="goal-stats">
+        <span><strong>$1,700</strong> Closed / Paid</span>
+        <span><strong>$32,800</strong> Active Pipeline</span>
+        <span><strong>$215,500</strong> Remaining Gap</span>
+      </div>
+
+      <!-- Lead Forecasting Engine -->
+      <div class="forecasting-engine">
+        <div class="forecast-input">
+          <label>Avg Value Per Lead ($)</label>
+          <input type="number" id="avgLeadValue" value="863" oninput="updateForecast()">
+        </div>
+        <div class="forecast-input">
+          <label>Expected Close Rate (%)</label>
+          <input type="number" id="closeRate" value="20" oninput="updateForecast()">
+        </div>
+        <div class="forecast-result">
+          <div class="big" id="leadsNeeded">0</div>
+          <div class="small">New Leads Needed</div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      function updateForecast() {
+        const gap = 215500;
+        const avgVal = parseFloat(document.getElementById('avgLeadValue').value) || 1;
+        const closeRate = (parseFloat(document.getElementById('closeRate').value) || 1) / 100;
+        
+        const needed = Math.ceil(gap / (avgVal * closeRate));
+        document.getElementById('leadsNeeded').innerText = needed.toLocaleString();
+      }
+      updateForecast();
+    </script>
+
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-title">Total Active Pipeline</div>
@@ -238,8 +332,8 @@
         <div class="metric-value">38</div>
       </div>
       <div class="metric-card">
-        <div class="metric-title">30 Days Close Rate</div>
-        <div class="metric-value">TBD</div>
+        <div class="metric-title">Avg Lead Value</div>
+        <div class="metric-value">$863</div>
       </div>
     </div>
 
