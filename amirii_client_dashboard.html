@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VRL Enterprise | Campaign Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050505; --text: #ffffff; --accent: #ff3e00; --accent-hover: #e03600;
+      --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace; --font-display: 'Space Grotesk', sans-serif;
+      --success: #22c55e;
+    }
+    body {
+      margin: 0; padding: 0; font-family: var(--font-body); background-color: var(--bg); color: var(--text);
+      background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 30px 30px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+    
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; }
+    .logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -0.05em; font-weight: bold; }
+    .dash-meta { font-family: var(--font-mono); font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+
+    .dash-title { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .dash-sub { color: rgba(255,255,255,0.6); margin-bottom: 3rem; font-size: 1.1rem; }
+
+    .treemap { display: flex; gap: 0.5rem; height: 750px; width: 100%; }
+    .tree-col { display: flex; flex-direction: column; gap: 0.5rem; flex-basis: 0; }
+    .tree-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+      padding: 1rem; position: relative; transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1);
+      display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+      flex-basis: 0; min-height: 90px; cursor: pointer;
+    }
+    .tree-box:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+    .tree-box.completed { border-color: rgba(34, 197, 94, 0.4); }
+    .tree-box.completed:hover { box-shadow: 0 0 20px rgba(34, 197, 94, 0.15); }
+    
+    .progress-fill {
+      position: absolute; left: 0; bottom: 0; right: 0; height: 0%;
+      background: rgba(34, 197, 94, 0.1); border-top: 1px solid rgba(34, 197, 94, 0.3);
+      z-index: 0; transition: height 2s cubic-bezier(0.2,0.8,0.2,1);
+    }
+    .tree-box > div { position: relative; z-index: 1; }
+
+    .tree-title { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
+    .tree-val { font-family: var(--font-display); font-size: 1.25rem; font-weight: bold; color: white; display: flex; justify-content: space-between; align-items: center; }
+    .status-badge { font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.1); color: white; }
+    .status-badge.done { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .tree-desc { font-family: var(--font-body); font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.4; margin-top: 0.5rem; }
+
+    /* Modal */
+    .welcome-modal-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: flex; align-items: center; justify-content: center; }
+    .wm-content { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.5); position: relative; }
+  </style>
+</head>
+<body>
+
+  <!-- Campaign Tracker Modal -->
+  <div id="trackerModalBg" class="welcome-modal-bg" style="display: none;" onclick="closeModal()">
+    <div class="wm-content" style="max-width: 800px; padding: 3rem;" onclick="event.stopPropagation()">
+      <div class="wm-close" onclick="closeModal()" style="position: absolute; top: 1.5rem; right: 1.5rem; cursor: pointer; color: white; opacity: 0.5;">✕</div>
+      <div style="font-family: var(--font-mono); font-size: 12px; color: var(--success); letter-spacing: 0.1em; margin-bottom: 1rem;" id="modalStatus">STATUS: IN PROGRESS (45%)</div>
+      <h2 id="modalTitle" style="font-family: var(--font-display); font-size: 2.5rem; margin: 0 0 1rem 0;">Campaign Name</h2>
+      <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 2rem;">Real-time analytics and tracking for this specific infrastructure block. When the block hits 100%, the campaign is fully executed.</p>
+      
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 2rem; display: flex; gap: 2rem; margin-bottom: 2rem;">
+        <div style="flex: 1;">
+          <div style="font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem;">CAPITAL ALLOCATED</div>
+          <div id="modalBudget" style="font-size: 1.5rem; font-weight: bold;">$0</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem;">CURRENT METRIC</div>
+          <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">Tracking...</div>
+        </div>
+      </div>
+      
+      <button style="background: white; color: black; border: none; padding: 1rem 2rem; font-family: var(--font-mono); font-weight: bold; cursor: pointer; border-radius: 4px; width: 100%;">VIEW DETAILED REPORT →</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="logo">VRL Enterprise</div>
+      <div class="dash-meta">CLIENT: AMIRII • DEPLOYMENT: ACTIVE</div>
+    </header>
+
+    <h1 class="dash-title">Infrastructure Tracker</h1>
+    <p class="dash-sub">Monitor the real-time execution of your purchased ecosystem.</p>
+
+    <!-- Hardcoded layout matching a purchased "Starter Pack" ($1000) -->
+    <div class="treemap">
+      <!-- Column 1 -->
+      <div class="tree-col" style="flex-grow: 420;">
+        <div class="tree-box" style="flex-grow: 400;" onclick="openModal('Tony Music Production', 400, 100)">
+          <div class="progress-fill" id="prog-tony" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">Tony Music Production</div>
+            <div class="tree-val">$400 <span class="status-badge done" id="badge-tony">100%</span></div>
+            <div class="tree-desc">2 Sessions • Creative Pack • Artwork • Campaign Theme</div>
+          </div>
+        </div>
+        <div class="tree-box" style="flex-grow: 20;" onclick="openModal('VRL Business Maps', 20, 100)">
+          <div class="progress-fill" id="prog-maps" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">VRL Business Maps</div>
+            <div class="tree-val">$20 <span class="status-badge done" id="badge-maps">100%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="tree-col" style="flex-grow: 380;">
+        <div class="tree-box" style="flex-grow: 180;" onclick="openModal('VRL Echo (Radio/PR)', 180, 45)">
+          <div class="progress-fill" id="prog-echo" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">VRL Echo (Radio/PR)</div>
+            <div class="tree-val">$180 <span class="status-badge" id="badge-echo">45%</span></div>
+            <div class="tree-desc">Global Radio DB • Sync Hunt • TV Placements</div>
+          </div>
+        </div>
+        <div class="tree-box" style="flex-grow: 100;" onclick="openModal('V-Proi Leads Generator', 100, 60)">
+          <div class="progress-fill" id="prog-vproi" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">V-Proi Leads Generator</div>
+            <div class="tree-val">$100 <span class="status-badge" id="badge-vproi">60%</span></div>
+            <div class="tree-desc">Active DJs, Playlists, Dancers (10K per sector)</div>
+          </div>
+        </div>
+        <div class="tree-box" style="flex-grow: 100;" onclick="openModal('TrendWars Content', 100, 15)">
+          <div class="progress-fill" id="prog-trend" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">TrendWars Content</div>
+            <div class="tree-val">$100 <span class="status-badge" id="badge-trend">15%</span></div>
+            <div class="tree-desc">Challenges (DC's) • Network Content Engine</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 3 -->
+      <div class="tree-col" style="flex-grow: 200;">
+        <div class="tree-box" style="flex-grow: 100;" onclick="openModal('Duardo Artist LLM', 100, 90)">
+          <div class="progress-fill" id="prog-llm" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">Duardo Artist LLM</div>
+            <div class="tree-val">$100 <span class="status-badge" id="badge-llm">90%</span></div>
+            <div class="tree-desc">Web & WhatsApp AI Agent • Talk to fans</div>
+          </div>
+        </div>
+        <div class="tree-box" style="flex-grow: 100;" onclick="openModal('VisioBookings', 100, 5)">
+          <div class="progress-fill" id="prog-bookings" style="height: 0%;"></div>
+          <div>
+            <div class="tree-title">VisioBookings</div>
+            <div class="tree-val">$100 <span class="status-badge" id="badge-bookings">5%</span></div>
+            <div class="tree-desc">Send Music to Promoters • Events DB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulate real-time progress filling after load
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById('prog-tony').style.height = '100%';
+        document.getElementById('prog-tony').parentElement.classList.add('completed');
+        
+        document.getElementById('prog-maps').style.height = '100%';
+        document.getElementById('prog-maps').parentElement.classList.add('completed');
+        
+        document.getElementById('prog-echo').style.height = '45%';
+        document.getElementById('prog-vproi').style.height = '60%';
+        document.getElementById('prog-trend').style.height = '15%';
+        document.getElementById('prog-llm').style.height = '90%';
+        document.getElementById('prog-bookings').style.height = '5%';
+      }, 500);
+    };
+
+    function openModal(title, budget, percent) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBudget').textContent = '$' + budget;
+      
+      const statusEl = document.getElementById('modalStatus');
+      if (percent === 100) {
+        statusEl.textContent = 'STATUS: COMPLETED (100%)';
+        statusEl.style.color = 'var(--success)';
+      } else {
+        statusEl.textContent = 'STATUS: IN PROGRESS (' + percent + '%)';
+        statusEl.style.color = 'var(--accent)';
+      }
+      
+      document.getElementById('trackerModalBg').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('trackerModalBg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

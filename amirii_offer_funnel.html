@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRL / Visio Offer Funnel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============ VRL BRAND PACK (locked) ============ */
+    :root {
+      --bg:#ffffff; --ink:#0a0a0a; --ink-soft:#4a4a4a; --ink-faint:#888888;
+      --line:#e8e8e8; --line-strong:#cfcfcf;
+      --accent:#ff6a00; --accent-soft:#ff8533;
+      --surface:#ffffff; --surface-hover:#fafafa;
+      --surface-active:rgba(255,106,0,.05);
+      --font-display:'Space Grotesk',sans-serif;
+      --font-body:'Inter',sans-serif;
+      --font-mono:'JetBrains Mono',monospace;
+      --r:6px;
+      --shadow:0 1px 0 var(--line), 0 8px 24px rgba(10,10,10,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      overflow-x: hidden;
+      background-image: radial-gradient(#ededed 1px, transparent 1px);
+      background-size: 22px 22px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    /* ---------- scanner line motif ---------- */
+    .scanner-line {
+      display: block; position: relative; width: 48px; height: 3px;
+      background: var(--accent); border-radius: 2px; overflow: hidden;
+      margin: 0 auto 2rem auto;
+    }
+    .scanner-line.left {
+      margin: 0 0 2rem 0;
+    }
+    .scanner-line::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 50%, transparent);
+      transform: translateX(-100%);
+      animation: sweep 2.8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes sweep { 0%{transform:translateX(-100%)} 60%,100%{transform:translateX(100%)} }
+
+    /* Funnel Stages */
+    .funnel-stage {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .funnel-stage.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Typography */
+    .pill-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1rem;
+    }
+
+    h1, h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; }
+    h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    .sub-headline {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+    .center-text { text-align: center; margin-left: auto; margin-right: auto; }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--r);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,106,0,.1);
+    }
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230a0a0a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px top 50%;
+      background-size: 10px auto;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      color: white;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn:hover { background: var(--accent); }
+    .btn:disabled { background: #e0e0e0; color: var(--ink-faint); cursor: not-allowed; }
+
+    /* Layout specific */
+    .split-view {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .split-view { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* Video Player Mock */
+    .video-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: #f6f6f6;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--r);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="100" height="100" fill="%23f0f0f0"/%3E%3Ccircle cx="50" cy="50" r="20" fill="%23e0e0e0"/%3E%3C%2Fsvg%3E');
+      background-size: cover;
+    }
+    .video-play-btn {
+      width: 70px; height: 70px; background: var(--ink); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .video-play-btn:hover { transform: scale(1.05); background: var(--accent); }
+    .video-play-btn svg { width: 24px; height: 24px; fill: white; margin-left: 4px; }
+
+    /* Offers Grid Section */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .offer-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: border-color .16s, box-shadow .16s;
+      position: relative;
+    }
+    .offer-card:hover { border-color: var(--line-strong); box-shadow: 0 1px 0 var(--line); }
+    .offer-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255,106,0,.1);
+      background: var(--surface-active);
+    }
+    .offer-card.selected::before {
+      content: '✓'; position: absolute; top: 1rem; right: 1rem;
+      color: var(--accent); font-weight: bold; font-family: var(--font-display); font-size: 1.2rem;
+    }
+    .offer-title {
+      font-family: var(--font-display); font-size: 1.05rem; font-weight: 600;
+      margin-bottom: 0.25rem; color: var(--ink); padding-right: 1.5rem;
+    }
+    .offer-desc { color: var(--ink-soft); font-size: 0.85rem; line-height: 1.4; }
+
+    /* Q&A Section */
+    .qa-section {
+      background: #fafafa;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    /* Floating Tracker */
+    .tracker {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px);
+      border: 1px solid var(--line-strong); border-radius: var(--r);
+      padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1.25rem;
+      box-shadow: var(--shadow);
+      transform: translateY(150%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 100;
+    }
+    .tracker.visible { transform: translateY(0); }
+    .tracker-count { font-family: var(--font-mono); font-size: 1.2rem; color: var(--accent); font-weight: bold; }
+    .tracker-text { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.4; }
+    .tracker-text strong { color: var(--ink); font-family: var(--font-display); font-size: 1rem; }
+
+    /* Visio Agent */
+    .visio-agent {
+      position: fixed; bottom: 2rem; right: 2rem;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 1rem;
+      z-index: 999; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .visio-agent.active { transform: translateY(0); }
+    .agent-bubble {
+      background: white; border: 1px solid var(--line-strong); border-radius: var(--r);
+      padding: 1.5rem; width: 320px; box-shadow: var(--shadow);
+      font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); line-height: 1.5;
+      position: relative;
+    }
+    .agent-bubble::after {
+      content: ''; position: absolute; bottom: -8px; right: 24px;
+      width: 16px; height: 16px; background: white; border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);
+      transform: rotate(45deg);
+    }
+    .agent-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: bold; }
+    .agent-header::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,106,0,0.4); } 70% { box-shadow: 0 0 0 6px rgba(255,106,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,106,0,0); } }
+    .agent-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .agent-btn { background: var(--surface-hover); border: 1px solid var(--line-strong); padding: 6px 12px; border-radius: 4px; font-family: var(--font-mono); font-size: 10px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+    .agent-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+    .agent-btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
+    .agent-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+    .agent-avatar {
+      width: 50px; height: 50px; background: var(--ink); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-family: var(--font-display); font-weight: bold; font-size: 1.2rem;
+      box-shadow: var(--shadow); border: 2px solid white;
+    }
+
+    /* Transition Overlay */
+    .overlay {
+      position: fixed; inset: 0; background: var(--accent); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: white; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .overlay.active { opacity: 1; pointer-events: all; }
+    .overlay h1 { color: white; font-size: 4rem; transform: translateY(20px); opacity: 0; transition: all 0.6s cubic-bezier(0.2,0.8,0.2,1) 0.3s; margin-bottom: 1rem; }
+    .overlay.active h1 { transform: translateY(0); opacity: 1; }
+    .overlay p { font-family: var(--font-mono); letter-spacing: .2em; text-transform: uppercase; font-size: 14px; opacity: 0; transition: opacity 0.4s ease 0.8s; margin-bottom: 2rem; }
+    .overlay.active p { opacity: 1; }
+    .overlay-progress { width: 300px; height: 2px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; opacity: 0; transition: opacity 0.4s ease 1s; }
+    .overlay.active .overlay-progress { opacity: 1; }
+    .overlay-progress-bar { height: 100%; background: white; width: 0%; transition: width 4.2s cubic-bezier(0.4, 0, 0.2, 1) 1s; }
+    .overlay.active .overlay-progress-bar { width: 100%; }
+
+    /* Builder Stage */
+    .builder-layout {
+      display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;
+    }
+    @media (max-width: 900px) { .builder-layout { grid-template-columns: 1fr; } }
+    
+    .preset-menu {
+      background: #fafafa; border: 1px solid var(--line); border-radius: var(--r); padding: 1.5rem;
+    }
+    .preset-btn {
+      display: block; width: 100%; text-align: left; background: white; border: 1px solid var(--line-strong);
+      padding: 1rem; border-radius: var(--r); margin-bottom: 0.75rem; cursor: pointer; transition: all 0.2s;
+    }
+    .preset-btn:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(255,106,0,0.1); }
+    .preset-btn.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255,106,0,0.1); }
+    .preset-price { font-family: var(--font-mono); font-weight: bold; font-size: 1.1rem; color: var(--accent); margin-bottom: 0.25rem; }
+    .preset-name { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+
+    .builder-main {
+      background: #050505; border-radius: 12px; padding: 2rem; color: white;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+    }
+    .builder-header {
+      display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;
+    }
+    .builder-total { font-family: var(--font-mono); font-size: 2.5rem; color: var(--accent); font-weight: bold; line-height: 1; }
+    
+    .treemap {
+      display: flex; gap: 0.5rem; height: 750px; width: 100%;
+    }
+    .tree-col {
+      display: flex; flex-direction: column; gap: 0.5rem; transition: flex-grow 0.4s cubic-bezier(0.2,0.8,0.2,1);
+      flex-basis: 0;
+    }
+    .tree-box {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 1rem; position: relative; transition: all 0.4s cubic-bezier(0.2,0.8,0.2,1);
+      display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+      flex-basis: 0; min-height: 90px;
+    }
+    .tree-box:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+    .tree-box.zero-budget { padding: 0.5rem 1rem; opacity: 0.5; min-height: 54px; flex-direction: row; align-items: center; }
+    .tree-box.zero-budget > div:first-child { display: flex; align-items: center; }
+    .tree-box.zero-budget .tree-desc, .tree-box.zero-budget .tree-val { display: none; }
+    .tree-box.zero-budget .tree-title { margin-bottom: 0; font-size: 11px; }
+    .tree-box.zero-budget .tree-controls { margin-top: 0; margin-left: auto; }
+    .tree-box.zero-budget .tree-btn:first-child { display: none; }
+    .tree-title { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
+    .tree-val { font-family: var(--font-display); font-size: 1.25rem; font-weight: bold; color: white; }
+    .tree-desc { font-family: var(--font-body); font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.4; margin-top: 0.5rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+    
+    .tree-controls {
+      display: flex; gap: 4px; margin-top: 1rem;
+    }
+    .tree-btn {
+      width: 28px; height: 28px; background: rgba(255,255,255,0.1); border: none; border-radius: 4px;
+      color: white; font-family: var(--font-mono); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .tree-btn:hover { background: var(--accent); }
+
+    /* Modal */
+    .welcome-modal-bg {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
+      z-index: 10000; display: flex; align-items: center; justify-content: center;
+    }
+    .wm-content {
+      background: #050505; border: 1px solid rgba(255, 62, 0, 0.3);
+      border-radius: 12px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Service Deep Dive Modal -->
+  <div id="serviceModalBg" class="welcome-modal-bg" style="display: none; z-index: 20000;" onclick="closeServiceModal()">
+    <div class="wm-content" style="max-width: 900px; display: flex; padding: 0; min-height: 500px;" onclick="event.stopPropagation()">
+      <div style="flex: 1.2; padding: 3rem; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center;">
+        <h2 id="serviceModalTitle" style="color: var(--accent); margin-top: 0; font-size: 2rem;">Service Name</h2>
+        <p id="serviceModalDesc" style="color: rgba(255,255,255,0.7); line-height: 1.6; font-size: 1.1rem; margin-bottom: 2rem;">Description here...</p>
+        <div>
+          <h4 style="color: white; margin-bottom: 1rem; font-family: var(--font-mono); letter-spacing: 0.1em; font-size: 0.8rem; opacity: 0.5;">ARCHITECTURAL VALUE</h4>
+          <ul id="serviceModalList" style="color: rgba(255,255,255,0.8); line-height: 1.8; padding-left: 1.2rem; font-size: 1rem;">
+          </ul>
+        </div>
+      </div>
+      <div style="flex: 1; background: #050505; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-radius: 0 16px 16px 0;">
+        <!-- Background Grid -->
+        <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.2;"></div>
+        <!-- Video Placeholder -->
+        <div style="text-align: center; position: relative; z-index: 2;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; cursor: pointer; box-shadow: 0 0 40px rgba(255, 62, 0, 0.3); transition: transform 0.3s;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div style="color: rgba(255,255,255,0.5); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;">PLAY EDUCATIONAL BRIEFING</div>
+        </div>
+      </div>
+      <div class="wm-close" onclick="closeServiceModal()" style="position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: white; padding: 0.5rem;">✕</div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ==========================================
+         STAGE 1: THE HOOK INTRO
+         ========================================== -->
+    <div id="stage1" class="funnel-stage active">
+      <div class="split-view">
+        <div class="video-container">
+          <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div style="position:absolute; bottom:1.5rem; left:1.5rem; background:rgba(255,255,255,0.9); padding:4px 8px; border-radius:4px; font-size:12px; font-weight:600;">Personal Intro from Founder</div>
+        </div>
+        
+        <div>
+          <div class="pill-badge">Stage 1 / Intro</div>
+          <span class="scanner-line left"></span>
+          <h1 style="font-size:2.8rem;">Let's build a genuine relationship.</h1>
+          <p class="sub-headline" style="font-size:1.05rem;">We build the tools and instruments to drive catalogue growth. Reaping the benefits of your enterprise requires the right architecture. Before we dive into the enterprise maps, let's establish contact.</p>
+          
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="fEmail" class="form-input" placeholder="amirii@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp Number</label>
+            <input type="tel" id="fPhone" class="form-input" placeholder="+1 (555) 000-0000" required>
+            <div style="font-size:12px; color:var(--ink-faint); margin-top:6px;">We use a 48hr communication window for onboarding.</div>
+          </div>
+          
+          <button class="btn" onclick="nextStage(2)" style="margin-top:1rem; width:auto;">Continue to Offering &rarr;</button>
+          <a href="#" onclick="forceNextStage(2); return false;" style="display:inline-block; margin-top:1rem; margin-left:1.5rem; font-size:13px; color:var(--ink-soft); text-decoration:none; font-family:var(--font-mono);">Skip for now / See next &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         STAGE 2: THE OFFER GRID & Q&A
+         ========================================== -->
+    <div id="stage2" class="funnel-stage">
+      <div class="text-center" style="text-align: center;">
+        <div class="pill-badge">Stage 2 / The Offering</div>
+        <span class="scanner-line"></span>
+        <h2>Select Your Growth Targets</h2>
+        <p class="sub-headline center-text">Click the bottlenecks you need solved. We will track your selections to tailor your ecosystem unlock.</p>
+      </div>
+
+      <div class="grid">
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Outreach</div><div class="offer-desc">Leverage global outreach to connect directly with DJs, dancers, venues, high-end promoters, agents, executives, and key platforms worldwide. Get intros to our networks, and so much more.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Vertical Growth</div><div class="offer-desc">Designing a pathway for your career from a business perspective.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Revenue Growth</div><div class="offer-desc">Learn exactly how to grow your revenue and stop leaving money on the table.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Expanding</div><div class="offer-desc">Export your brand and catalogue across the world using tested models.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">New Opportunities</div><div class="offer-desc">Continuous business modelling to create new opportunities.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Visio Intel (Insider)</div><div class="offer-desc">High-level industrial insider data and underwriting mechanics.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">Tech, Business & Tooling</div><div class="offer-desc">Learn how to use tech to boost your business via tips, courses, etc.</div></div>
+        <div class="offer-card" onclick="toggleOffer(this)"><div class="offer-title">VRL R&D</div><div class="offer-desc">Let us be your R&D. Powerful end-to-end tooling to research your business.</div></div>
+      </div>
+
+      <div class="qa-section">
+        <h2 style="font-size:1.5rem; margin-bottom:1.5rem;">Let us help you Funnel (Q&A)</h2>
+        <div class="split-view" style="gap:2rem;">
+          <div>
+            <div class="form-group">
+              <label class="form-label">What's most important to you? (Select all that apply)</label>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem; margin-top:12px;">
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink);"><input type="checkbox" name="qGoal" value="Bookings" style="margin-top:4px;"> Bookings / Touring</label>
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink);"><input type="checkbox" name="qGoal" value="Streaming" style="margin-top:4px;"> Streaming / Catalogue Growth</label>
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink);"><input type="checkbox" name="qGoal" value="Merch" style="margin-top:4px;"> Merch / D2C</label>
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink);"><input type="checkbox" name="qGoal" value="Publishing" style="margin-top:4px;"> Publishing / Sync</label>
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink); grid-column: span 2;"><input type="checkbox" name="qGoal" value="Capital" style="margin-top:4px;"> I wanna build my business further, raise further capital too (Only for those already with revenue)</label>
+                <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.95rem; cursor:pointer; color:var(--ink); grid-column: span 2;"><input type="checkbox" name="qGoal" value="NoRevenue" style="margin-top:4px;"> No revenue, self funded though</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="margin-bottom:12px;">Current Team Infrastructure</label>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+                <input type="text" id="qManagement" class="form-input" placeholder="Management (e.g. Self, XYZ)">
+                <input type="text" id="qLabel" class="form-input" placeholder="Label (e.g. Independent)">
+                <input type="text" id="qDistro" class="form-input" placeholder="Distributor (e.g. DistroKid)">
+                <input type="text" id="qPublisher" class="form-input" placeholder="Publisher (if any)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Do you have any budget?</label>
+              <select id="qBudget" class="form-input">
+                <option value="">Select affordable range...</option>
+                <option>Bootstrap (Looking for Starter Pack)</option>
+                <option>$200 - $800+ (Low End)</option>
+                <option>$1,000 - $5,000 (Growth)</option>
+                <option>$10,000+ (Enterprise Tools)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div style="padding:2rem; background:#fff; border:1px solid var(--line); border-radius:var(--r); text-align:center;">
+              <h3 style="font-family:var(--font-display); font-size:1.2rem; margin-bottom:1rem;">Ready to act as a Founder?</h3>
+              <p style="color:var(--ink-soft); font-size:0.95rem; margin-bottom:2rem;">Based on your selections, we will prepare a custom roadmap and starter pack.</p>
+              <button class="btn" id="unlockBtn" onclick="nextStage(3)">Build Starter Pack</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         STAGE 3: THE STARTER PACK BUILDER
+         ========================================== -->
+    <div id="stage3" class="funnel-stage">
+      <div class="text-center" style="text-align: center; margin-bottom: 3rem;">
+        <div class="pill-badge">Stage 3 / Architecture</div>
+        <span class="scanner-line"></span>
+        <h2>Build Your Ecosystem Pack</h2>
+        <p class="sub-headline center-text">Allocate capital across the infrastructure. The system automatically adjusts architectural capacity based on budget.</p>
+      </div>
+
+      <div class="builder-layout">
+        <!-- Sidebar Presets -->
+        <div class="preset-menu">
+          <h4 style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-faint); margin-bottom:1rem;">Pre-Packaged Models</h4>
+          
+          <button class="preset-btn" onclick="applyPreset('consult')">
+            <div class="preset-price">$200</div>
+            <div class="preset-name">Consult & Modeling</div>
+            <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Strategy Call + Business Modeling Forms</div>
+          </button>
+          
+          <button class="preset-btn active" onclick="applyPreset('starter')">
+            <div class="preset-price">$1,000</div>
+            <div class="preset-name">The Starter Pack</div>
+            <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Tony Duardo Production + Outreach + VisioBookings</div>
+          </button>
+          
+          <button class="preset-btn" onclick="applyPreset('jv')">
+            <div class="preset-price">$3,500 - $5,000.00</div>
+            <div class="preset-name">JV Campaign</div>
+            <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Song + Comprehensive Campaign + Ad Spend + Content Nets</div>
+          </button>
+          
+          <button class="preset-btn" onclick="applyPreset('enterprise')">
+            <div class="preset-price">$10,000</div>
+            <div class="preset-name">Enterprise Pack</div>
+            <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">Maximum capacity unlocked. Dedicated agent & full engine.</div>
+          </button>
+
+          <div style="margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.5rem;">
+            <h4 style="font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-faint); margin-bottom:0.75rem;">Auto-Allocate Custom Budget</h4>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="autoBudgetInput" class="form-input" placeholder="$ Budget" style="padding: 10px; font-size: 0.9rem;" max="10000">
+              <button class="btn" style="padding: 10px; width: auto; font-size: 10px;" onclick="autoAllocate()">Apply</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Treemap -->
+        <div class="builder-main">
+          <div class="builder-header">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:0.2em; color:rgba(255,255,255,0.4); margin-bottom:8px;">Total Capital Allocation</div>
+              <div class="builder-total" id="buildTotal">$1,000</div>
+            </div>
+            <div>
+              <button class="btn" style="background:var(--accent); color:white; padding:12px 24px;" onclick="triggerUnlockAnimation()">Initialize Architecture &rarr;</button>
+            </div>
+          </div>
+
+          <div class="treemap" id="treemap">
+            <!-- Column 1: Audio & Strategy -->
+            <div class="tree-col" id="col-audio">
+              <div class="tree-box" id="box-tony_prod" onclick="openServiceModal('tony_prod')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">Tony Music Production</div>
+                  <div class="tree-val" id="val-tony_prod"></div>
+                  <div class="tree-desc">2 Sessions • Creative Pack • Artwork • Campaign Theme • 50/50 Master Splits</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('tony_prod', -100)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('tony_prod', 100)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-courses" onclick="openServiceModal('courses')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">Consults / Modelling</div>
+                  <div class="tree-val" id="val-courses"></div>
+                  <div class="tree-desc">Strategy Call • Q&A Qualifying • Business Modelling</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('courses', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('courses', 50)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-vrl_maps" onclick="openServiceModal('vrl_maps')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">VRL Business Maps</div>
+                  <div class="tree-val" id="val-vrl_maps"></div>
+                  <div class="tree-desc">Visual Map of Offers • Asset Value Evaluator</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('vrl_maps', -10)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('vrl_maps', 10)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-data_room" onclick="openServiceModal('data_room')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">Data Room & Label Suite</div>
+                  <div class="tree-val" id="val-data_room"></div>
+                  <div class="tree-desc">Market Map + Research • Visio Intel • Track Metrics • Competitor Analysis</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('data_room', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('data_room', 50)">+</button></div>
+              </div>
+            </div>
+
+            <!-- Column 2: Outreach & Networks -->
+            <div class="tree-col" id="col-outreach">
+              <div class="tree-box" id="box-visiopage" onclick="openServiceModal('visiopage')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">VisioPage Networks</div>
+                  <div class="tree-val" id="val-visiopage"></div>
+                  <div class="tree-desc">Travel/Cars/Dance Clips attached to interests • Goal: 1000 Content Pieces</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visiopage', -100)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visiopage', 100)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-vrl_echo" onclick="openServiceModal('vrl_echo')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">VRL Echo (Radio/PR)</div>
+                  <div class="tree-val" id="val-vrl_echo"></div>
+                  <div class="tree-desc">Global Radio DB • Sync Hunt • Royalties Tracker • TV Placements</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('vrl_echo', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('vrl_echo', 50)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-v_proi" onclick="openServiceModal('v_proi')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">V-Proi Leads Generator</div>
+                  <div class="tree-val" id="val-v_proi"></div>
+                  <div class="tree-desc">Active DJs, Playlists, Dancers, Influencers (10K per sector) • PR Seeding</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('v_proi', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('v_proi', 50)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-trendwars" onclick="openServiceModal('trendwars')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">TrendWars Content</div>
+                  <div class="tree-val" id="val-trendwars"></div>
+                  <div class="tree-desc">Challenges (DC's) • Network Content Engine • Prize Sets • Dancer Clipping</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('trendwars', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('trendwars', 50)">+</button></div>
+              </div>
+            </div>
+
+            <!-- Column 3: Tech & Ads -->
+            <div class="tree-col" id="col-tech">
+              <div class="tree-box" id="box-duardo_llm" onclick="openServiceModal('duardo_llm')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">Duardo Artist LLM</div>
+                  <div class="tree-val" id="val-duardo_llm"></div>
+                  <div class="tree-desc">Web & WhatsApp AI Agent • Talk to fans • Answer questions • Drive sales</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('duardo_llm', -20)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('duardo_llm', 20)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-visio_bookings" onclick="openServiceModal('visio_bookings')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">VisioBookings</div>
+                  <div class="tree-val" id="val-visio_bookings"></div>
+                  <div class="tree-desc">Send Music to Promoters • Events DB • Targeted Cities • Demand Signals</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visio_bookings', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visio_bookings', 50)">+</button></div>
+              </div>
+              <div class="tree-box" id="box-visio_ads" onclick="openServiceModal('visio_ads')" style="cursor: pointer;">
+                <div>
+                  <div class="tree-title">Visio ADS Manager</div>
+                  <div class="tree-val" id="val-visio_ads"></div>
+                  <div class="tree-desc">Remove bots via Meta & Google • Optimized ADS • 1M Reach Target</div>
+                </div>
+                <div class="tree-controls"><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visio_ads', -50)">-</button><button class="tree-btn" onclick="event.stopPropagation(); adjBudget('visio_ads', 50)">+</button></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Live Tracking UI (Only visible on Stage 2) -->
+  <div class="tracker" id="tracker">
+    <div class="tracker-count" id="trackerCount">0</div>
+    <div class="tracker-text">
+      <strong>Solutions Selected</strong><br>
+      Building your custom roadmap...
+    </div>
+  </div>
+
+  <script>
+    // Service Modal Logic — Full Playbook Details
+    const serviceData = {
+      tony_prod: {
+        title: "Tony Music Production",
+        desc: "Executive-level music production. $1,000 session fee (2 sessions). 50/50 on Master & Publishing ownership (US Tony Duardo / Visio / VRL). Wav/Mp3 master agreement + publishing splits. Tony Duardo listed as non-main artist; main artist costs fee or Tony's team decision.",
+        list: [
+          "2 Studio Sessions — $1,000 session fee",
+          "50/50 Master & Publishing splits (ownership)",
+          "Creative Pack: Artwork, Campaign Theme, Creative Directive",
+          "Higgsfield Shorts Clips for social",
+          "Press Release + Song EPK",
+          "Mix / Performance masters (Wav/Mp3)",
+          "About the Song video (small microphone format)",
+          "Visual Look & Theme, Emotional Hook, Campaign Messaging",
+          "Honest Producer Letter: ROI-driven, quality-focused approach"
+        ]
+      },
+      courses: {
+        title: "Consults / Modelling & Free Courses",
+        desc: "$200 per group call + qualifying questions. Not Alex Hormozi or Iman Gadzhi — just sharing the data and lessons learned. Book a call and get courses free. We do business modelling and consulting to ensure training and maximise every opportunity.",
+        list: [
+          "1-on-1 or Group Strategy Call — $200",
+          "Q&A Qualifying Forms (lead qualifying)",
+          "Custom Business Modelling & Revenue Path",
+          "How to Raise Capital",
+          "How to Grow Catalogue Consumption (Tooling)",
+          "How to Get More Usage of Your Product",
+          "How to Export Music Globally",
+          "Getting Leads in Music Business (more bookings)",
+          "Promoting Viral Techniques",
+          "How Publishing Makes Money",
+          "How We Make Money (full transparency)",
+          "Using AI in the Business Side of Music (100x Your Career)",
+          "Assets Management"
+        ]
+      },
+      vrl_maps: {
+        title: "VRL Business Maps",
+        desc: "$20/pm. A visual map of all offers — how they drive traffic and revenue to your asset (publishing & streaming). Includes Asset Value Evaluator: how much a song is worth in brand value & streaming, and how everything is connected.",
+        list: [
+          "Visual Map of All Offers & Revenue Flows",
+          "Asset Value Evaluator (brand value + streaming worth)",
+          "How everything is connected — end to end",
+          "Bottleneck Identification & Capital Flow Guidance",
+          "Timeline Overview of Campaign Lifecycle"
+        ]
+      },
+      data_room: {
+        title: "Data Room & Label Suite",
+        desc: "Your private intelligence hub. Visio Intel operates as a magazine/newsletter format — research, intelligence, news, and market signals. Label Suite tracks growth, metrics, and manages all campaigns. VRL Business Modelling for collaboration as a value-added service.",
+        list: [
+          "Visio Intel: Magazine/newsletter research & intelligence",
+          "Market Map + Research on your genre & opportunity",
+          "Databases: DJs, Dancers, Media, Communities",
+          "See what top competitors are doing",
+          "Visio Artist Portal synced with Spotify, YouTube, TikTok",
+          "Predictive brand voice modelling",
+          "Label Suite: Track growth, metrics, manage campaigns",
+          "VRL Business Modelling for Collaboration (value-added)"
+        ]
+      },
+      visiopage: {
+        title: "VisioPage Networks",
+        desc: "$1,000 minimum. Travel, cars, dance clips, memes — music attached to interests. Connects song to content placement (e.g., attach song to a house video). Song Pages across socials. Artist Fanpages for maximum content output.",
+        list: [
+          "Content attached to interests: travel, cars, dance, memes",
+          "Song-to-content placement (e.g., house video + your track)",
+          "Song Pages across all social platforms",
+          "Artist Fanpages — maximum content output",
+          "Goal: 1,000 content pieces",
+          "Reach: 1,000 × 100,000 views per video per platform",
+          "Algorithmic triggering via volume"
+        ]
+      },
+      vrl_echo: {
+        title: "VRL Echo (Radio/PR)",
+        desc: "$500. Publishing Plugger Tracker (rights engine). Radio plug to global database of radio and TV. We track every airplay and ensure we collect royalties via MLC, PROs, Sound Exchange. Sync Hunt submits to all sync opportunities.",
+        list: [
+          "Radio Plug: Global database of radio DJs & shows — $500",
+          "TV Placement Strategy for revenue & impact",
+          "Airplay Tracker: Track every spin, ensure royalty collection",
+          "Revenue Funnel: MLC, PROs, Sound Exchange collection",
+          "Sync Hunt: Submit song to all sync opportunities",
+          "Goal: 1,000 airplays across 12 months",
+          "Revenue potential: $3,000–$5,000 (more revenue = more advance capital)"
+        ]
+      },
+      v_proi: {
+        title: "V-Proi Leads Generator",
+        desc: "$100 per sector / $100 per batch send. Leads generator ensuring all key people that can bring value to your brand are in your datasets — thousands of contacts (10K per sector).",
+        list: [
+          "Active DJs & Playlists — 10K per sector — $100",
+          "Dancers, Content Creators, Influencers — 10K — $100",
+          "Producers, Engineers, Musicians, Managers, A&Rs, Singers",
+          "Music Lovers Worldwide database",
+          "Traditional Media: News, PR, Pages, Social seeding — $100/batch",
+          "Music Journalists & Reviewers — $100/batch",
+          "Targeted PR Seeding across all sectors"
+        ]
+      },
+      trendwars: {
+        title: "TrendWars Content",
+        desc: "$100 minimum (prize set + outreach). Viral challenge infrastructure and content engines — challenges beyond just dance. Network Content Engine for massive distribution. Dancer clipping systems.",
+        list: [
+          "Challenges (DCs) — beyond just dance — $100 minimum",
+          "Network Content Engine for mass distribution",
+          "Thousands of dancers for content creation",
+          "Content Clipping for Artists",
+          "DCs adapted for every platform (TikTok, Shorts, Reels)",
+          "Prize Sets to incentivise creators",
+          "500+ creator reactions targeted"
+        ]
+      },
+      duardo_llm: {
+        title: "Duardo Artist LLM",
+        desc: "$100/pm. Your personal AI agent trained on your brand data. Deployed on your website and WhatsApp. Talks to fans about albums and songs. Captures, onboards, upsells, and retains fans. Drives direct sales.",
+        list: [
+          "Web & WhatsApp AI Agent — $100/pm",
+          "Talk to fans: albums, songs, shows, merch",
+          "Capture fans, onboard & upsell them, retain them",
+          "AI Agent plugged with your brand data",
+          "Landing Page: Direct to fans, collect sales directly",
+          "Drive merchandise & ticket sales 24/7",
+          "Fan intent data collection"
+        ]
+      },
+      visio_bookings: {
+        title: "VisioBookings",
+        desc: "$100 (events/venues database + targeted outreach). Send music and artist profile to targeted regions — promoters, event organisers, targeted cities. Build relationships in your niche, share data, create demand.",
+        list: [
+          "Send Music + Profile to Promoters — $100",
+          "Events & Venues Database (targeted for you)",
+          "Targeted city campaigns based on streaming data",
+          "Build relationships in your niche genre",
+          "Share demand data with event organisers",
+          "Demand Signals: know where your audience is live"
+        ]
+      },
+      visio_ads: {
+        title: "Visio ADS Manager",
+        desc: "$100 minimum. Remove bot traffic via Meta & Google verification. Optimised ADS that find listeners who engage with your content type and style. Advanced Ads Library for finding your real FANS. Includes Spotify ADS.",
+        list: [
+          "Bot removal via Meta & Google verification — $100",
+          "Optimised ADS targeting real listeners who engage",
+          "Advanced Ads Library: finding YOUR fans",
+          "Spotify ADS integration",
+          "Playlist & Content ADS campaigns",
+          "Target: 1M verified human reach per cycle",
+          "Conversion tracking & ROI reporting"
+        ]
+      }
+    };
+
+    function openServiceModal(key) {
+      const data = serviceData[key];
+      if (!data) return;
+      document.getElementById('serviceModalTitle').textContent = data.title;
+      document.getElementById('serviceModalDesc').textContent = data.desc;
+      
+      const ul = document.getElementById('serviceModalList');
+      ul.innerHTML = '';
+      data.list.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      
+      document.getElementById('serviceModalBg').style.display = 'flex';
+    }
+
+    function closeServiceModal() {
+      document.getElementById('serviceModalBg').style.display = 'none';
+    }
+
+    // Unlock Animation Logic
+    function triggerUnlockAnimation() {
+      localStorage.setItem('visioTourActive', 'true');
+      const overlay = document.getElementById('unlockOverlay');
+      overlay.classList.add('active');
+      setTimeout(() => {
+        window.location.href = 'amirii_proposal.html';
+      }, 5000);
+    }
+
+    // Stage transition logic
+    function nextStage(stageNum) {
+      if (stageNum === 2) {
+        const email = document.getElementById('fEmail').value;
+        const phone = document.getElementById('fPhone').value;
+        if(!email || !phone) {
+          alert('Please enter your email and WhatsApp to continue.');
+          return;
+        }
+      }
+
+      document.querySelectorAll('.funnel-stage').forEach(el => el.classList.remove('active'));
+      document.getElementById('stage' + stageNum).classList.add('active');
+      window.scrollTo(0,0);
+    }
+
+    function forceNextStage(stageNum) {
+      document.querySelectorAll('.funnel-stage').forEach(el => el.classList.remove('active'));
+      document.getElementById('stage' + stageNum).classList.add('active');
+      window.scrollTo(0,0);
+    }
+
+    // Grid tracking logic
+    let selectedCount = 0;
+    function toggleOffer(card) {
+      card.classList.toggle('selected');
+      if (card.classList.contains('selected')) {
+        selectedCount++;
+      } else {
+        selectedCount--;
+      }
+      updateTracker();
+    }
+
+    function updateTracker() {
+      const tracker = document.getElementById('tracker');
+      const countLabel = document.getElementById('trackerCount');
+      const unlockBtn = document.getElementById('unlockBtn');
+
+      countLabel.textContent = selectedCount;
+
+      if (selectedCount > 0) {
+        tracker.classList.add('visible');
+        unlockBtn.textContent = 'Build Starter Pack (' + selectedCount + ' Solutions)';
+        if(document.getElementById('visioAgent').classList.contains('active')) {
+           updateAgentMessage(2);
+        }
+      } else {
+        tracker.classList.remove('visible');
+        unlockBtn.textContent = 'Build Starter Pack';
+      }
+    }
+
+    // Budget Builder Logic
+    const budgets = {
+      tony_prod: 400, courses: 0, vrl_maps: 20, data_room: 0,
+      visiopage: 0, vrl_echo: 180, v_proi: 100, trendwars: 100,
+      duardo_llm: 100, visio_bookings: 100, visio_ads: 0
+    };
+    
+    function updateTreemap() {
+      let total = 0;
+      for (const k in budgets) total += budgets[k];
+      document.getElementById('buildTotal').textContent = '$' + total.toLocaleString();
+
+      const colAudio = budgets.tony_prod + budgets.courses + budgets.vrl_maps + budgets.data_room;
+      const colOutreach = budgets.visiopage + budgets.vrl_echo + budgets.v_proi + budgets.trendwars;
+      const colTech = budgets.duardo_llm + budgets.visio_bookings + budgets.visio_ads;
+
+      // Adjust column widths (flex-grow)
+      document.getElementById('col-audio').style.flexGrow = Math.max(10, colAudio);
+      document.getElementById('col-outreach').style.flexGrow = Math.max(10, colOutreach);
+      document.getElementById('col-tech').style.flexGrow = Math.max(10, colTech);
+
+      // Adjust box heights inside columns and update text
+      for (const k in budgets) {
+        const box = document.getElementById('box-' + k);
+        box.style.flexGrow = Math.max(1, budgets[k]);
+        if (budgets[k] === 0) box.classList.add('zero-budget');
+        else box.classList.remove('zero-budget');
+        document.getElementById('val-' + k).textContent = '$' + budgets[k].toLocaleString();
+      }
+    }
+
+    function adjBudget(key, amt) {
+      let currentTotal = 0;
+      for (const k in budgets) currentTotal += budgets[k];
+
+      if (budgets[key] + amt >= 0) {
+        if (amt > 0 && currentTotal + amt > 10000) {
+          let available = 10000 - currentTotal;
+          if (available > 0) {
+            budgets[key] += available;
+            updateTreemap();
+          } else {
+            alert("Maximum self-serve allocation of $10,000 reached. For Enterprise infrastructure above $10,000, please contact our team directly.");
+          }
+        } else {
+          budgets[key] += amt;
+          updateTreemap();
+        }
+      }
+    }
+
+    function applyPreset(type) {
+      document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      if (type === 'consult') {
+        Object.assign(budgets, {tony_prod:0, courses:200, vrl_maps:0, data_room:0, visiopage:0, vrl_echo:0, v_proi:0, trendwars:0, duardo_llm:0, visio_bookings:0, visio_ads:0});
+      } else if (type === 'starter') {
+        Object.assign(budgets, {tony_prod:400, courses:0, vrl_maps:20, data_room:0, visiopage:0, vrl_echo:180, v_proi:100, trendwars:100, duardo_llm:100, visio_bookings:100, visio_ads:0});
+      } else if (type === 'jv') {
+        Object.assign(budgets, {tony_prod:1500, courses:0, vrl_maps:20, data_room:100, visiopage:1200, vrl_echo:500, v_proi:280, trendwars:300, duardo_llm:100, visio_bookings:200, visio_ads:800});
+      } else if (type === 'enterprise') {
+        Object.assign(budgets, {tony_prod:2000, courses:500, vrl_maps:100, data_room:500, visiopage:2000, vrl_echo:1000, v_proi:1000, trendwars:1000, duardo_llm:400, visio_bookings:500, visio_ads:1000});
+      }
+      updateTreemap();
+    }
+
+    function autoAllocate() {
+      const input = document.getElementById('autoBudgetInput').value;
+      const amount = parseInt(input, 10);
+      if (isNaN(amount) || amount <= 0) return alert('Enter a valid budget.');
+      if (amount > 10000) {
+        alert('Maximum self-serve allocation of $10,000 reached. For Enterprise infrastructure above $10,000, please contact our team directly.');
+        return;
+      }
+      
+      const ratio = amount / 5000; // based on JV preset total
+      budgets.tony_prod = Math.round(1500 * ratio / 10) * 10;
+      budgets.courses = 0;
+      budgets.vrl_maps = Math.round(20 * ratio / 10) * 10 || 20; 
+      budgets.data_room = Math.round(100 * ratio / 10) * 10;
+      budgets.visiopage = Math.round(1200 * ratio / 10) * 10;
+      budgets.vrl_echo = Math.round(500 * ratio / 10) * 10;
+      budgets.v_proi = Math.round(280 * ratio / 10) * 10;
+      budgets.trendwars = Math.round(300 * ratio / 10) * 10;
+      budgets.duardo_llm = Math.round(100 * ratio / 10) * 10;
+      budgets.visio_bookings = Math.round(200 * ratio / 10) * 10;
+      budgets.visio_ads = Math.round(800 * ratio / 10) * 10;
+      
+      // Fix rounding errors mathematically
+      let currentTotal = 0;
+      for (const k in budgets) currentTotal += budgets[k];
+      
+      let diff = amount - currentTotal;
+      if (diff > 0) {
+        budgets.tony_prod += diff;
+      } else if (diff < 0) {
+        // Prevent negative budgets when subtracting deficit
+        for (const k in budgets) {
+          if (diff === 0) break;
+          if (budgets[k] > 0) {
+            let subtract = Math.min(budgets[k], Math.abs(diff));
+            budgets[k] -= subtract;
+            diff += subtract;
+          }
+        }
+      }
+      
+      updateTreemap();
+    }
+    
+    // Call on load
+    setTimeout(updateTreemap, 100);
+
+    // Agent Tour Logic
+    const agentMessages = [
+      "Welcome. I am Visio, your ecosystem guide. Let's establish contact to begin your onboarding.",
+      "Excellent. Now, select the precise bottlenecks holding back your growth. We will track your selections to build your custom map.",
+      "Your data is ready. Click 'Build Starter Pack' to configure your capital allocation.",
+      "This is the Treemap Budget Allocator. The system visually adjusts infrastructure capacity based on your inputs. Finalize your budget and Initialize Architecture."
+    ];
+
+    function initAgent() {
+      if (localStorage.getItem('visioTourSkipped') === 'true') return;
+      setTimeout(() => {
+        document.getElementById('visioAgent').classList.add('active');
+        updateAgentMessage(0);
+      }, 1000);
+    }
+
+    function updateAgentMessage(step) {
+      document.getElementById('agentMessage').textContent = agentMessages[step];
+      const actions = document.getElementById('agentActions');
+      if (step === 0) {
+        actions.innerHTML = '<button class="agent-btn primary" onclick="document.querySelector(\'.btn\').click();">Proceed</button><button class="agent-btn" onclick="agentSkip()">Skip Tour</button>';
+      } else if (step === 1) {
+        actions.innerHTML = '<button class="agent-btn primary" onclick="document.getElementById(\'agentActions\').innerHTML=\'\';">Got it</button>';
+      } else if (step === 2) {
+        actions.innerHTML = '<button class="agent-btn primary" onclick="document.getElementById(\'unlockBtn\').click(); updateAgentMessage(3)">Configure Builder</button>';
+      } else if (step === 3) {
+        actions.innerHTML = '<button class="agent-btn primary" onclick="document.getElementById(\'agentActions\').innerHTML=\'\';">Understood</button>';
+      }
+    }
+
+    function agentSkip() {
+      document.getElementById('visioAgent').classList.remove('active');
+      localStorage.setItem('visioTourSkipped', 'true');
+    }
+
+    const originalNextStage = nextStage;
+    nextStage = function(num) {
+      originalNextStage(num);
+      if (num === 2 && localStorage.getItem('visioTourSkipped') !== 'true') {
+        updateAgentMessage(1);
+      } else if (num === 3 && localStorage.getItem('visioTourSkipped') !== 'true') {
+        updateAgentMessage(3);
+      }
+    };
+    
+    const originalForceNextStage = forceNextStage;
+    forceNextStage = function(num) {
+      originalForceNextStage(num);
+      if (num === 2 && localStorage.getItem('visioTourSkipped') !== 'true') {
+        updateAgentMessage(1);
+      } else if (num === 3 && localStorage.getItem('visioTourSkipped') !== 'true') {
+        updateAgentMessage(3);
+      }
+    };
+
+    // (Modal logic is defined above at line 688-722 via serviceData. No duplicate needed.)
+
+    window.onload = initAgent;
+  </script>
+  <!-- Visio Agent Widget -->
+  <div class="visio-agent" id="visioAgent">
+    <div class="agent-bubble">
+      <div class="agent-header">Visio Intelligence</div>
+      <div id="agentMessage">Loading...</div>
+      <div class="agent-actions" id="agentActions"></div>
+    </div>
+    <div class="agent-avatar">V</div>
+  </div>
+
+  <!-- Transition Overlay -->
+  <div class="overlay" id="unlockOverlay">
+    <h1>Welcome to VRL</h1>
+    <p>Generating Ecosystem...</p>
+    <div class="overlay-progress"><div class="overlay-progress-bar"></div></div>
+  </div>
+
+</body>
+</html>
