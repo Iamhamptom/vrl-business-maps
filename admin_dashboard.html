@@ -634,16 +634,19 @@
 
     <!-- PRODUCTION DELIVERY HUB -->
     <div style="margin-top: 3rem; margin-bottom: 4rem;">
-      <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing:-0.02em;">Production Delivery Hub</h2>
-      <p style="color: var(--ink-faint); margin-bottom: 1.5rem;">Manage the $32k pipeline delivery. Drag and drop to assign producers.</p>
+      <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; letter-spacing:-0.02em;">Production Delivery Hub & Margins</h2>
+      <p style="color: var(--ink-faint); margin-bottom: 1.5rem;">Manage the $32k pipeline delivery. Producers cost 10% (capped at $200). You retain the rest.</p>
       
       <div class="kanban-board">
         <!-- Pre-Production -->
         <div class="kanban-col">
           <div class="kanban-col-header">Pre-Production (1)</div>
           <div class="kanban-card">
-            <div class="k-title">Rahima - 1 Track</div>
-            <div class="k-assignee">Unassigned</div>
+            <div class="k-title">Rahima - 1 Track ($1,000)</div>
+            <div class="k-assignee">Producer 1</div>
+            <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
+              <span style="color:#ff4444;">Fee: $100</span> | <span style="color:#0d9488;">Profit: $900</span>
+            </div>
           </div>
         </div>
 
@@ -651,22 +654,35 @@
         <div class="kanban-col">
           <div class="kanban-col-header">Beat &amp; Arrangement (1)</div>
           <div class="kanban-card">
-            <div class="k-title">Prince Amiri - Verified Package</div>
-            <div class="k-assignee" style="color:var(--accent);">Tony Duardo</div>
+            <div class="k-title">Prince Amiri - Verified ($1,000)</div>
+            <div class="k-assignee" style="color:var(--accent);">Producer 2</div>
+            <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
+              <span style="color:#ff4444;">Fee: $100</span> | <span style="color:#0d9488;">Profit: $900</span>
+            </div>
           </div>
         </div>
 
-        <!-- Vocals & Tracking -->
+        <!-- Vocals & Tracking (Tony's Focus) -->
         <div class="kanban-col">
-          <div class="kanban-col-header">Vocals &amp; Tracking (0)</div>
+          <div class="kanban-col-header">Vocals / Exec (Tony Focus)</div>
+          <div class="kanban-card" style="border-color:var(--accent);">
+            <div class="k-title">Skyla Tyla - £5,000</div>
+            <div class="k-assignee" style="color:var(--accent);">Tony Duardo (Chords+Vocals)</div>
+            <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
+              <span style="color:#ff4444;">Fee: $0</span> | <span style="color:#0d9488;">Profit: £5,000</span>
+            </div>
+          </div>
         </div>
 
         <!-- Mixing & Mastering -->
         <div class="kanban-col">
           <div class="kanban-col-header">Mixing &amp; Mastering (1)</div>
           <div class="kanban-card">
-            <div class="k-title">Duetti Remix - Al Capo x Ciza</div>
-            <div class="k-assignee" style="color:#0d9488;">Producer X</div>
+            <div class="k-title">Duetti Remix ($6,000)</div>
+            <div class="k-assignee" style="color:#0d9488;">Producer 1 & 2</div>
+            <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
+              <span style="color:#ff4444;">Fee: $400 (Capped)</span> | <span style="color:#0d9488;">Profit: $5,600</span>
+            </div>
           </div>
         </div>
 
@@ -674,10 +690,48 @@
         <div class="kanban-col">
           <div class="kanban-col-header">Delivered ✅ (1)</div>
           <div class="kanban-card" style="opacity:0.6;">
-            <div class="k-title">R- One - Single</div>
+            <div class="k-title">R- One - Single ($200)</div>
             <div class="k-assignee">Tony Duardo</div>
+            <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
+              <span style="color:#ff4444;">Fee: $0</span> | <span style="color:#0d9488;">Profit: $200</span>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- TEAM PAYROLL SECTION -->
+      <div style="margin-top: 2rem; background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 8px; padding: 1.5rem;">
+        <h3 style="font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1rem;">Team Payroll & Margins</h3>
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--line); color: var(--ink-faint);">
+              <th style="padding: 0.5rem;">Team Member</th>
+              <th style="padding: 0.5rem;">Role</th>
+              <th style="padding: 0.5rem;">Assigned Value</th>
+              <th style="padding: 0.5rem;">Owed (10% | Max $200)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 1rem 0.5rem; font-weight: 500;">Producer 1</td>
+              <td style="padding: 1rem 0.5rem; color: #aaa;">Beatmaker</td>
+              <td style="padding: 1rem 0.5rem;">$4,000</td>
+              <td style="padding: 1rem 0.5rem; color: #ff4444; font-family: var(--font-mono);">$300</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 1rem 0.5rem; font-weight: 500;">Producer 2</td>
+              <td style="padding: 1rem 0.5rem; color: #aaa;">Beatmaker</td>
+              <td style="padding: 1rem 0.5rem;">$4,000</td>
+              <td style="padding: 1rem 0.5rem; color: #ff4444; font-family: var(--font-mono);">$300</td>
+            </tr>
+            <tr>
+              <td style="padding: 1rem 0.5rem; font-weight: bold; color: var(--accent);">Tony Duardo</td>
+              <td style="padding: 1rem 0.5rem; color: var(--accent);">Exec. Producer / Vocals</td>
+              <td style="padding: 1rem 0.5rem; color: var(--accent);">Entire Pipeline</td>
+              <td style="padding: 1rem 0.5rem; color: #0d9488; font-family: var(--font-mono); font-weight: bold;">$32,200 (Net Profit)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
