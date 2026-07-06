@@ -237,8 +237,9 @@
         <div class="label t2" style="margin-top: 2px;">Executive Control Room</div>
       </div>
     </div>
-    <nav class="desktop-nav" style="display: flex; align-items: center;">
-      <a href="index.html" style="text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500; margin-right: 2rem;">&larr; Return Home</a>
+    <nav class="desktop-nav" style="display: flex; align-items: center; gap: 1rem;">
+      <a href="index.html" style="text-decoration: none; color: var(--ink-soft); font-size: 13px; font-weight: 500; margin-right: 1rem;">&larr; Return Home</a>
+      <button onclick="document.getElementById('yoco-modal').showModal()" style="background: transparent; color: #fff; padding: 10px 18px; border: 1px solid var(--line); border-radius: var(--r); font-family: var(--font-mono); font-size: 11px; cursor: pointer; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; transition: border-color 0.2s;">💰 Generate Pay Link</button>
       <a href="offer_funnel.html" style="background: var(--accent); color: white; padding: 10px 18px; border-radius: var(--r); font-family: var(--font-mono); font-size: 11px; text-decoration: none; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,106,0,0.2);">Offer Funnel</a>
     </nav>
   </header>
@@ -728,13 +729,127 @@
               <td style="padding: 1rem 0.5rem; font-weight: bold; color: var(--accent);">Tony Duardo</td>
               <td style="padding: 1rem 0.5rem; color: var(--accent);">Exec. Producer / Vocals</td>
               <td style="padding: 1rem 0.5rem; color: var(--accent);">Entire Pipeline</td>
-              <td style="padding: 1rem 0.5rem; color: #0d9488; font-family: var(--font-mono); font-weight: bold;">$32,200 (Net Profit)</td>
+              <td style="padding: 1rem 0.5rem; color: #0d9488; font-family: var(--font-mono); font-weight: bold;">$32,200 (Gross Profit)</td>
             </tr>
           </tbody>
         </table>
+
+        <!-- SOFTWARE SUBSCRIPTIONS OVERHEAD -->
+        <h4 style="font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faint); margin-top: 2rem; margin-bottom: 0.5rem;">Software & Overhead Subscriptions (Monthly)</h4>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div style="background: #000; border: 1px solid #333; border-radius: 6px; padding: 0.75rem 1rem; min-width: 120px;">
+            <div style="font-size: 13px; font-weight: 500;">Splice</div>
+            <div style="font-family: var(--font-mono); color: #ff4444; font-size: 12px; margin-top: 4px;">-$20 /mo</div>
+          </div>
+          <div style="background: #000; border: 1px solid #333; border-radius: 6px; padding: 0.75rem 1rem; min-width: 120px;">
+            <div style="font-size: 13px; font-weight: 500;">Autotune</div>
+            <div style="font-family: var(--font-mono); color: #ff4444; font-size: 12px; margin-top: 4px;">-$25 /mo</div>
+          </div>
+          <div style="background: #000; border: 1px solid #333; border-radius: 6px; padding: 0.75rem 1rem; min-width: 120px;">
+            <div style="font-size: 13px; font-weight: 500;">Slate Digital</div>
+            <div style="font-family: var(--font-mono); color: #ff4444; font-size: 12px; margin-top: 4px;">-$15 /mo</div>
+          </div>
+          <div style="background: #000; border: 1px solid var(--accent); border-radius: 6px; padding: 0.75rem 1rem; min-width: 120px;">
+            <div style="font-size: 13px; font-weight: bold; color: var(--accent);">SUNO (AI)</div>
+            <div style="font-family: var(--font-mono); color: #ff4444; font-size: 12px; margin-top: 4px;">-$24 /mo</div>
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-weight: bold;">Tony's True Net Profit (After Overhead):</div>
+          <div style="font-family: var(--font-display); font-size: 1.5rem; color: #0d9488;">$32,116</div>
+        </div>
       </div>
     </div>
   </main>
+
+  <!-- YOCO PAYMENT LINK MODAL -->
+  <dialog id="yoco-modal" style="background: #111; color: white; border: 1px solid var(--line); border-radius: 8px; padding: 2rem; max-width: 500px; margin: auto;">
+    <h3 style="font-family: var(--font-display); margin-bottom: 0.5rem; font-size: 1.5rem;">Generate Payment Link</h3>
+    <p style="color: #888; font-size: 13px; margin-bottom: 1.5rem;">Generate secure Yoco payment links instantly.</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <div>
+        <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Yoco Secret Key (Live or Test)</label>
+        <input type="password" id="yoco-secret-key" placeholder="sk_live_..." style="width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px; font-family: var(--font-mono);" />
+        <div style="font-size: 10px; color: #666; margin-top: 4px;">Your key is stored only in your local browser and NEVER committed to GitHub.</div>
+      </div>
+      <div>
+        <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Amount (ZAR)</label>
+        <input type="number" id="yoco-amount" placeholder="e.g. 10000" style="width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px; font-family: var(--font-mono);" />
+      </div>
+      <div>
+        <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Reference / Client Name</label>
+        <input type="text" id="yoco-reference" placeholder="e.g. Prince Amiri Deposit" style="width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px; font-family: var(--font-mono);" />
+      </div>
+      
+      <button id="yoco-generate-btn" style="background: var(--accent); color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 0.5rem;">Generate Link</button>
+      
+      <div id="yoco-result-container" style="display: none; margin-top: 1rem;">
+        <label style="display:block; font-size: 11px; text-transform: uppercase; color: #0d9488; margin-bottom: 4px;">Success! Copy your link:</label>
+        <input type="text" id="yoco-result-url" readonly style="width: 100%; background: #000; border: 1px solid #0d9488; color: #0d9488; padding: 10px; border-radius: 6px; font-family: var(--font-mono); margin-bottom: 8px;" />
+      </div>
+    </div>
+    
+    <div style="text-align: right; margin-top: 1.5rem;">
+      <button onclick="document.getElementById('yoco-modal').close()" style="background: transparent; border: none; color: #888; cursor: pointer;">Close</button>
+    </div>
+  </dialog>
+
+  <script>
+    // Load saved secret key if it exists
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedKey = localStorage.getItem('yoco_secret_key');
+      if (savedKey) document.getElementById('yoco-secret-key').value = savedKey;
+    });
+
+    // Handle Generation
+    document.getElementById('yoco-generate-btn').addEventListener('click', async () => {
+      const secretKey = document.getElementById('yoco-secret-key').value;
+      const amountZar = document.getElementById('yoco-amount').value;
+      const reference = document.getElementById('yoco-reference').value;
+
+      if (!secretKey || !amountZar) return alert("Secret Key and Amount are required.");
+      
+      // Save key locally
+      localStorage.setItem('yoco_secret_key', secretKey);
+
+      const btn = document.getElementById('yoco-generate-btn');
+      btn.innerText = "Generating...";
+      
+      try {
+        // Hit our new Secure Proxy server to bypass CORS
+        const response = await fetch('/api/generate_payment_link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            secret_key: secretKey,
+            payload: {
+              amount: parseInt(amountZar) * 100, // Yoco requires cents
+              currency: "ZAR",
+              name: reference || "VRL Business Maps Checkout"
+            }
+          })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || data.detail || "Failed to generate link");
+        }
+
+        if (data.url) {
+          document.getElementById('yoco-result-container').style.display = 'block';
+          document.getElementById('yoco-result-url').value = data.url;
+        } else {
+          alert("Unexpected response from Yoco: " + JSON.stringify(data));
+        }
+      } catch (err) {
+        alert("Error: " + err.message + "\\n\\nMake sure you are running 'python3 start_admin.py' to proxy the API securely!");
+      } finally {
+        btn.innerText = "Generate Link";
+      }
+    });
+  </script>
 
 </body>
 </html>
