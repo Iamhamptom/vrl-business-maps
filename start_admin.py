@@ -13,9 +13,20 @@ class SecureAdminServer(http.server.SimpleHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             req_data = json.loads(post_data)
             
+            # Read local secure key
+            try:
+                with open('.yoco_key', 'r') as f:
+                    secure_key = f.read().strip()
+            except FileNotFoundError:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'The .yoco_key file is missing on the server.'}).encode())
+                return
+
             # Proxies the request securely to Yoco, bypassing browser CORS
             yoco_req = urllib.request.Request('https://api.yoco.com/v1/payment_links', data=json.dumps(req_data['payload']).encode())
-            yoco_req.add_header('Authorization', f"Bearer {req_data['secret_key']}")
+            yoco_req.add_header('Authorization', f"Bearer {secure_key}")
             yoco_req.add_header('Content-Type', 'application/json')
             
             try:
