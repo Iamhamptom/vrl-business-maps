@@ -166,6 +166,14 @@
       margin-top: 12px;
     }
 
+    /* Revenue Map */
+    .revenue-map { display: flex; flex-direction: column; gap: 16px; margin-top: 48px; }
+    .rev-row { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; gap: 24px; }
+    .rev-box { padding: 24px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line-strong); position: relative; }
+    .rev-box.action { border-left: 4px solid var(--accent); }
+    .rev-box.payout { border-left: 4px solid #0d9488; background: rgba(13, 148, 136, 0.02); }
+    .rev-arrow { text-align: center; color: var(--line-strong); font-size: 24px; }
+
     /* Visual Timeline */
     .visual-timeline {
       position: relative;
@@ -252,6 +260,7 @@
     <a href="#slide-5" class="dot"></a><a href="#slide-6" class="dot"></a>
     <a href="#slide-7" class="dot"></a><a href="#slide-8" class="dot"></a>
     <a href="#slide-9" class="dot"></a><a href="#slide-10" class="dot"></a>
+    <a href="#slide-11" class="dot"></a>
   </div>
 
   <!-- SLIDE 1: HERO -->
@@ -470,10 +479,60 @@
     </div>
   </section>
 
-  <!-- SLIDE 9: FINANCIAL SUMMARY -->
+  <!-- SLIDE 9: REVENUE MAP -->
   <section class="slide" id="slide-9">
     <div class="slide-inner">
-      <div class="mono-tag">08. Summary</div>
+      <div class="mono-tag">08. ROI Mapping</div>
+      <h2>How We Make Money</h2>
+      <p class="lead">The VRL ecosystem is designed to convert attention directly into revenue. Here is exactly how our marketing modules trigger payouts for the artist across the global royalty system.</p>
+      
+      <div class="revenue-map">
+        <!-- Flow 1 -->
+        <div class="rev-row">
+          <div class="rev-box action">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">DSPs & Algorithms</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">VisioPitch drives traffic to editorial and algorithmic playlists.</p>
+          </div>
+          <div class="rev-arrow">→</div>
+          <div class="rev-box payout">
+            <h3 style="font-size: 18px; margin-bottom: 8px; color: #0d9488;">Master Royalties</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">Direct per-stream payouts from Spotify, Apple Music, and Amazon.</p>
+          </div>
+        </div>
+
+        <!-- Flow 2 -->
+        <div class="rev-row">
+          <div class="rev-box action">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Radio & Club Seeding</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">V-Prai secures spins on 30k stations and support from 4k club DJs.</p>
+          </div>
+          <div class="rev-arrow">→</div>
+          <div class="rev-box payout">
+            <h3 style="font-size: 18px; margin-bottom: 8px; color: #0d9488;">PROs & Performance</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">ASCAP, BMI, and SAMRO collect mechanical/performance royalties for public broadcasts.</p>
+          </div>
+        </div>
+
+        <!-- Flow 3 -->
+        <div class="rev-row">
+          <div class="rev-box action">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Viral Social Scaling</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">Targeted dancers and creators generate high-volume UGC.</p>
+          </div>
+          <div class="rev-arrow">→</div>
+          <div class="rev-box payout">
+            <h3 style="font-size: 18px; margin-bottom: 8px; color: #0d9488;">Digital Monetization</h3>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 0;">Direct payouts from TikTok Sound libraries, YouTube Content ID, and Meta audio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: FINANCIAL SUMMARY -->
+  <section class="slide" id="slide-10">
+    <div class="slide-inner">
+      <div class="mono-tag">09. Summary</div>
       <h2>The Financial Structure</h2>
       <p class="lead">A consolidated view of the investment required to execute this top-tier industry rollout.</p>
       
@@ -513,10 +572,10 @@
     </div>
   </section>
 
-  <!-- SLIDE 10: TIMELINE & TERMS -->
-  <section class="slide" id="slide-10">
+  <!-- SLIDE 11: TIMELINE & TERMS -->
+  <section class="slide" id="slide-11">
     <div class="slide-inner">
-      <div class="mono-tag">09. Execution</div>
+      <div class="mono-tag">10. Execution</div>
       <h2>Timeline & Terms</h2>
       
       <div class="visual-timeline">
