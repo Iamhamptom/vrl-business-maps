@@ -8,10 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* ============ VRL BRAND PACK ============
-       Light, precise, "verification made visible." Orange scanner line #FF6A00
-       is the SINGLE accent, never decoration. Space Grotesk display · Inter body
-       · JetBrains Mono labels. */
     :root {
       --bg: #ffffff; --ink: #0a0a0a; --ink-soft: #4a4a4a; --ink-faint: #888888;
       --line: #e8e8e8; --line-strong: #cfcfcf;
@@ -35,7 +31,6 @@
       padding: 40px 20px;
     }
 
-    /* ---------- scanner line motif ---------- */
     .scanner-line {
       display: block; position: relative; width: 48px; height: 3px;
       background: var(--accent); border-radius: 2px; overflow: hidden;
@@ -50,7 +45,7 @@
     @keyframes sweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: var(--surface);
       border: 1px solid var(--line);
@@ -189,9 +184,42 @@
     }
 
     td { color: var(--ink-soft); vertical-align: top; }
-    td:first-child { color: var(--ink); font-weight: 500; width: 35%; }
+    td:first-child { color: var(--ink); font-weight: 500; width: 25%; }
     
+    .kpi-text {
+      font-size: 12px;
+      color: var(--ink);
+      background: rgba(255,106,0,0.06);
+      padding: 6px 10px;
+      border-radius: 4px;
+      border-left: 2px solid var(--accent);
+      margin-top: 6px;
+      display: inline-block;
+    }
+
+    .kpi-text b { color: var(--accent); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; }
+
     .td-highlight { color: var(--accent) !important; font-weight: 600 !important; }
+
+    .info-block {
+      background: #fafafa;
+      border: 1px solid var(--line-strong);
+      padding: 24px;
+      border-radius: var(--r);
+      margin-bottom: 40px;
+    }
+    .info-block h3 { font-size: 16px; margin-bottom: 12px; }
+    .info-block p { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; }
+    .info-block p:last-child { margin-bottom: 0; }
+
+    .terms-block {
+      padding-top: 24px;
+      border-top: 1px dashed var(--line-strong);
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+    .terms-block ol { margin-left: 16px; margin-top: 8px; }
+    .terms-block li { margin-bottom: 6px; }
 
     .footer {
       padding: 24px 40px;
@@ -213,19 +241,13 @@
     }
     .vrl-badge span { color: var(--accent); }
 
-    /* Print styles for PDF export */
+    /* Print styles */
     @media print {
-      body {
-        padding: 0;
-        background: #fff;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .container {
-        border: none;
-        box-shadow: none;
-      }
+      body { padding: 0; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .container { border: none; box-shadow: none; max-width: 100%; }
       .scanner-line::after { display: none; }
+      .kpi-text { background: none; border: 1px solid var(--line); padding: 4px 8px; }
+      table { page-break-inside: avoid; }
     }
   </style>
 </head>
@@ -271,20 +293,35 @@
         </div>
       </div>
 
-      <h2>Release Pack</h2>
+      <div class="info-block">
+        <h3>Methodology & Ecosystem</h3>
+        <p>All marketing outreach is powered by our proprietary VRL / Visio ecosystem. We utilize <strong>V-Prai</strong> for precise lead-generation and target matching, and <strong>VisioPitch</strong> to execute special, highly-targeted pitches at scale. Performance and valuation are actively tracked via the <strong>VRL Echo</strong> data layer.</p>
+      </div>
+
+      <h2>Release Pack & Deliverables</h2>
       <table>
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Details</th>
+            <th>Client Expectations</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td>Full DSP Release</td>
             <td>Spotify, Apple Music</td>
+            <td><div class="kpi-text">Track uploaded, claimed, and pitched to editorial playlists</div></td>
           </tr>
           <tr>
             <td>Artwork</td>
             <td>Included (X)</td>
+            <td><div class="kpi-text">2 Revisions + Final High-Res Delivery</div></td>
           </tr>
           <tr>
             <td>Possible Visualiser</td>
             <td class="td-highlight">(Separate cost)</td>
+            <td><div class="kpi-text">4K Video Asset Delivered</div></td>
           </tr>
           <tr>
             <td>Social Media Pieces & Shorts</td>
@@ -295,19 +332,22 @@
                 • Pre-Release Announcement + Leak
               </div>
             </td>
+            <td><div class="kpi-text">Minimum 36 distinct media assets uploaded + Content Calendar provided</div></td>
           </tr>
           <tr>
             <td>Included In YouTube Mix</td>
             <td>Ciza Live Mix Feature (Ciza’s Palace)</td>
+            <td><div class="kpi-text">Inclusion in 1 high-visibility DJ mix</div></td>
           </tr>
           <tr>
             <td>Press Kit</td>
             <td>N/A</td>
+            <td><div class="kpi-text">Not included in this tier</div></td>
           </tr>
         </tbody>
       </table>
 
-      <h2>V-Prai + Pitch Builder</h2>
+      <h2>V-Prai + Pitch Builder Strategy</h2>
       <div class="mono" style="margin-bottom: 16px;">Target Marketing Budget: <b>$8,000 per track</b></div>
       
       <table>
@@ -315,61 +355,90 @@
           <tr>
             <th>Module</th>
             <th>Reach / Target</th>
-            <th>Allocated Budget</th>
+            <th>Methodology & Expected Value</th>
+            <th>Budget</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Radio Plugging (auto plugging)</td>
-            <td>Per region (Over 30,000 stations worldwide)</td>
+            <td>Radio Plugging</td>
+            <td>Per region (30,000+ stations)</td>
+            <td><div class="kpi-text"><b>10-20% Engagement</b><br>Automated targeting via VisioPitch; expect ~40-50 regional playlist adds.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$500 - $1,500.00</td>
           </tr>
           <tr>
             <td>DJ's</td>
-            <td>Over 4,000 (Touring DJ's)</td>
+            <td>4,000+ (Touring DJ's)</td>
+            <td><div class="kpi-text"><b>10-20% Engagement</b><br>Direct special pitch via V-Prai targeting; early club support metrics tracked.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Creators</td>
-            <td>Pitch to creators that match the record</td>
+            <td>Niche curated creators</td>
+            <td><div class="kpi-text"><b>10-20% Uptake</b><br>Pitch to matching profiles; expected ~10-15 solid UGC videos on TikTok/Reels.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$500.00</td>
           </tr>
           <tr>
             <td>Dancers</td>
-            <td>10,000 dancers per territory</td>
+            <td>10,000 targeted dancers</td>
+            <td><div class="kpi-text"><b>5 Viral Hits</b><br>Targeted choreo seeding to prompt 5 core viral challenge attempts.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
-            <td>Media (Journalists In music)</td>
-            <td>Over 900 Publications worldwide pool</td>
+            <td>Media (Journalists)</td>
+            <td>900+ Verified Publications</td>
+            <td><div class="kpi-text"><b>10-20% Engagement</b><br>Special pitching; expecting 9-10 published articles/write-ups.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
-            <td>Social media Pages (Pitch)</td>
-            <td>Over 110 dance music pages</td>
+            <td>Social Media Pages</td>
+            <td>110+ high-traffic dance pages</td>
+            <td><div class="kpi-text"><b>10-20% Organic Boost</b><br>Pitched placements yielding ~250k+ potential targeted impressions.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
             <td>Clipping Budget</td>
-            <td>$1,000 - $2,000</td>
+            <td>Content Scaling</td>
+            <td><div class="kpi-text"><b>Full Delivery</b><br>36 optimized short-form clips extracted, delivered and posted.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
-            <td>Fan Page (song pages)</td>
-            <td>$200 per page (30 days)</td>
+            <td>Fan Page Support</td>
+            <td>$200/page (30 days)</td>
+            <td><div class="kpi-text"><b>High Conversion</b><br>Sponsored pages expected to drive 50,000+ clicks to DSPs.</div></td>
             <td style="color: var(--ink); font-weight: 500;">x5 - $1,000.00</td>
           </tr>
           <tr>
-            <td>Advanced (Bots protected ADS)</td>
-            <td>—</td>
+            <td>Advanced</td>
+            <td>Bots protected ADS</td>
+            <td><div class="kpi-text"><b>Protected Traffic</b><br>Clean algorithmic boost free of bot farms.</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr style="background: var(--surface-hover);">
-            <td colspan="2" style="text-align: right; font-weight: 600;">Total Marketing Estimate:</td>
+            <td colspan="3" style="text-align: right; font-weight: 600;">Total Marketing Estimate:</td>
             <td class="td-highlight" style="font-size: 14px;">$3,500 - $7,000</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="info-block" style="background: #fff; margin-bottom: 20px;">
+        <h3>Campaign Timeline</h3>
+        <ul style="font-size: 13px; color: var(--ink-soft);">
+          <li><strong>Phase 1 (1-2 Weeks):</strong> Preparation, Asset Collation, and DSP Delivery.</li>
+          <li><strong>Phase 2 (Weeks 2-4):</strong> Target validation and V-Prai special pitching execution.</li>
+          <li><strong>Phase 3 (Weeks 4-6):</strong> Peak engagement tracking, media publishing, and clipping execution.</li>
+        </ul>
+      </div>
+
+      <div class="terms-block">
+        <strong>Terms & Conditions</strong>
+        <ol>
+          <li>All outlined expected values and engagements (10-20%) are estimates based on the historical performance of VRL tools; they are not legally binding guarantees.</li>
+          <li>The client retains full approval of all visual assets prior to the V-Prai pitching phase.</li>
+          <li>Timelines are subject to change based on DSP ingestion delays and final asset delivery.</li>
+          <li>Marketing budgets must be cleared prior to the initiation of the VisioPitch sequence.</li>
+        </ol>
+      </div>
 
     </div>
     
