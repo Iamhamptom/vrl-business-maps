@@ -45,7 +45,7 @@
     @keyframes sweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: var(--surface);
       border: 1px solid var(--line);
@@ -184,8 +184,19 @@
     }
 
     td { color: var(--ink-soft); vertical-align: top; }
-    td:first-child { color: var(--ink); font-weight: 500; width: 35%; }
+    td:first-child { color: var(--ink); font-weight: 500; width: 25%; }
     
+    .kpi-text {
+      font-size: 12px;
+      color: var(--ink);
+      background: rgba(255,106,0,0.06);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border-left: 2px solid var(--accent);
+      margin-top: 6px;
+      display: inline-block;
+    }
+
     .td-highlight { color: var(--accent) !important; font-weight: 600 !important; }
 
     .footer {
@@ -211,8 +222,9 @@
     /* Print styles */
     @media print {
       body { padding: 0; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .container { border: none; box-shadow: none; }
+      .container { border: none; box-shadow: none; max-width: 100%; }
       .scanner-line::after { display: none; }
+      .kpi-text { background: none; border: 1px solid var(--line); padding: 2px 6px; }
     }
   </style>
 </head>
@@ -256,20 +268,30 @@
         </div>
       </div>
 
-      <h2>Release Pack</h2>
+      <h2>Release Pack & Deliverables</h2>
       <table>
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Details</th>
+            <th>Client KPI / Tracking</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td>Full DSP Release</td>
-            <td>Spotify, Apple Music</td>
+            <td>Spotify, Apple Music, Global Networks</td>
+            <td><div class="kpi-text">Track uploaded, claimed, and pitched to editorial playlists</div></td>
           </tr>
           <tr>
             <td>Artwork</td>
             <td>Included (X)</td>
+            <td><div class="kpi-text">2 Revisions + Final High-Res Delivery</div></td>
           </tr>
           <tr>
             <td>Possible Visualiser</td>
             <td class="td-highlight">(Covered in scale package)</td>
+            <td><div class="kpi-text">4K Video Asset Delivered</div></td>
           </tr>
           <tr>
             <td>Social Media Pieces & Shorts</td>
@@ -280,14 +302,17 @@
                 • Pre-Release Announcement + Leak
               </div>
             </td>
+            <td><div class="kpi-text">Minimum 36 distinct media assets uploaded + Content Calendar provided</div></td>
           </tr>
           <tr>
             <td>Included In YouTube Mix</td>
             <td>Live Mix Feature</td>
+            <td><div class="kpi-text">Inclusion in 1 high-visibility DJ mix</div></td>
           </tr>
           <tr>
             <td>Press Kit</td>
             <td>Full PR Writeup Included</td>
+            <td><div class="kpi-text">EPK Delivered (PDF + Digital Link)</div></td>
           </tr>
         </tbody>
       </table>
@@ -300,52 +325,61 @@
           <tr>
             <th>Module</th>
             <th>Reach / Target</th>
-            <th>Allocated Budget</th>
+            <th>KPI / Expected Result</th>
+            <th>Budget</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Radio Plugging (auto plugging)</td>
             <td>Per region (Over 30,000 stations worldwide)</td>
+            <td><div class="kpi-text">50+ Confirmed playlist additions & radio spins tracked</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,500.00</td>
           </tr>
           <tr>
             <td>DJ's</td>
             <td>Over 4,000 (Touring DJ's)</td>
+            <td><div class="kpi-text">Direct email delivery + 15% open/play rate report</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Creators</td>
             <td>Scale pitching to creators that match the record</td>
+            <td><div class="kpi-text">10-15 Unique UGC videos on TikTok/Reels</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Dancers</td>
             <td>10,000 dancers per territory</td>
-            <td style="color: var(--ink); font-weight: 500;">$1,000.00 (Targeted)</td>
+            <td><div class="kpi-text">5 Core choreographies reaching 100k+ total views</div></td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Media (Journalists In music)</td>
             <td>Over 900 Publications worldwide pool</td>
-            <td style="color: var(--ink); font-weight: 500;">$1,000.00 (Targeted)</td>
+            <td><div class="kpi-text">5-8 Guaranteed press features or blog write-ups</div></td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Social media Pages (Pitch)</td>
             <td>Over 110 dance music pages</td>
-            <td style="color: var(--ink); font-weight: 500;">$1,000.00 (Targeted)</td>
+            <td><div class="kpi-text">Paid placement resulting in 250k+ target impressions</div></td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Clipping Budget</td>
             <td>Expanded Content Clipping & Scaling</td>
+            <td><div class="kpi-text">36 Optimized short-form clips delivered</div></td>
             <td style="color: var(--ink); font-weight: 500;">$1,500.00</td>
           </tr>
           <tr>
             <td>Fan Page (song pages)</td>
             <td>$200 per page (30 days)</td>
+            <td><div class="kpi-text">50,000+ Direct clicks to DSP (Spotify/Apple) links</div></td>
             <td style="color: var(--ink); font-weight: 500;">x5 - $1,000.00</td>
           </tr>
           <tr style="background: var(--surface-hover);">
-            <td colspan="2" style="text-align: right; font-weight: 600;">Total Marketing Allocation:</td>
+            <td colspan="3" style="text-align: right; font-weight: 600;">Total Marketing Allocation:</td>
             <td class="td-highlight" style="font-size: 14px;">$9,000.00</td>
           </tr>
         </tbody>
