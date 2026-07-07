@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prince Amiri | Presentation Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff; --ink: #0a0a0a; --ink-soft: #4a4a4a; --ink-faint: #888888;
+      --line: #e8e8e8; --line-strong: #cfcfcf;
+      --accent: #ff6a00; --accent-soft: #ff8533;
+      --surface: #ffffff; --surface-hover: #fafafa;
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --r: 8px; 
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Deck Layout */
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 40px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+
+    .slide-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Common typography */
+    .mono-tag {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    
+    h1 { font-size: 56px; font-weight: 700; line-height: 1.1; margin-bottom: 24px; }
+    h2 { font-size: 40px; font-weight: 700; line-height: 1.2; margin-bottom: 24px; }
+    h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+    
+    p.lead { font-size: 18px; color: var(--ink-soft); max-width: 700px; line-height: 1.7; margin-bottom: 32px; }
+
+    /* Visual motifs */
+    .scanner-line {
+      display: block; position: relative; width: 64px; height: 4px;
+      background: var(--accent); border-radius: 2px; overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .scanner-line::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 50%, transparent);
+      transform: translateX(-100%);
+      animation: sweep 2.8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes sweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* Components */
+    .finance-block {
+      background: var(--surface-hover);
+      border: 1px solid var(--line-strong);
+      padding: 40px;
+      border-radius: var(--r);
+    }
+    .val-main { font-size: 48px; font-weight: 700; font-family: var(--font-display); color: var(--accent); line-height: 1; margin-bottom: 8px;}
+    .val-sub { font-size: 16px; color: var(--ink-faint); margin-bottom: 24px; text-decoration: line-through;}
+    
+    .tech-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 32px;
+      border-radius: var(--r);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+    .tech-card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
+    .tech-card h3 { color: var(--accent); font-family: var(--font-mono); font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .image-container {
+      width: 100%;
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      border: 1px solid var(--line);
+      position: relative;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .image-container:hover img {
+      transform: scale(1.03);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      background: #fff;
+    }
+    th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); background: var(--surface-hover); }
+    td:first-child { font-weight: 600; color: var(--ink); width: 25%; }
+    
+    .kpi-text {
+      font-size: 13px;
+      color: var(--ink);
+      background: rgba(255,106,0,0.06);
+      padding: 8px 12px;
+      border-radius: 4px;
+      border-left: 2px solid var(--accent);
+      display: inline-block;
+    }
+    .kpi-text b { color: var(--accent); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; display: block; margin-bottom: 4px;}
+
+    .terms { font-size: 12px; color: var(--ink-faint); margin-top: 40px; padding-top: 24px; border-top: 1px dashed var(--line); }
+    .terms ol { padding-left: 16px; margin-top: 12px; }
+    .terms li { margin-bottom: 8px; }
+
+    /* Slide Navigation */
+    .nav-dots {
+      position: fixed;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--line-strong);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .dot:hover { background: var(--accent); transform: scale(1.5); }
+
+    /* Print styles for PDF generation */
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff;}
+      .slide { min-height: 1120px; border-bottom: none; page-break-after: always; padding: 40px; justify-content: flex-start;}
+      .nav-dots { display: none; }
+      .scanner-line::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-dots">
+    <a href="#slide-1" class="dot"></a>
+    <a href="#slide-2" class="dot"></a>
+    <a href="#slide-3" class="dot"></a>
+    <a href="#slide-4" class="dot"></a>
+    <a href="#slide-5" class="dot"></a>
+    <a href="#slide-6" class="dot"></a>
+  </div>
+
+  <!-- SLIDE 1: HERO -->
+  <section class="slide" id="slide-1">
+    <div class="slide-inner">
+      <div class="scanner-line"></div>
+      <div class="mono-tag">Target: Prince Amiri</div>
+      <h1>RECORD RE-PRODUCTION<br>& GLOBAL RELEASE</h1>
+      <p class="lead">A strategic overview of the full studio re-production, release mechanics, and aggressive targeted digital marketing rollout.</p>
+      
+      <div style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--line);">
+        <p class="mono-tag" style="color: var(--ink-faint);">Executive Producer</p>
+        <p style="font-size: 20px; font-weight: 600; font-family: var(--font-display);">Tony Duardo</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: FINANCIALS & SCOPE -->
+  <section class="slide" id="slide-2">
+    <div class="slide-inner">
+      <div class="grid-2">
+        <div>
+          <div class="mono-tag">01. Project Scope</div>
+          <h2>The Strategy & Value</h2>
+          <p class="lead">We are combining elite studio re-production with the full force of the Touchline Agency's digital scale package.</p>
+          
+          <ul style="list-style: none; margin-bottom: 40px;">
+            <li style="margin-bottom: 16px; display: flex; gap: 12px;">
+              <span style="color: var(--accent);">■</span>
+              <span><strong>Full Studio Re-production (1 Track):</strong> Complete mixing and mastering.</span>
+            </li>
+            <li style="margin-bottom: 16px; display: flex; gap: 12px;">
+              <span style="color: var(--accent);">■</span>
+              <span><strong>Global DSP Release:</strong> Spotify, Apple Music, and all major networks.</span>
+            </li>
+            <li style="margin-bottom: 16px; display: flex; gap: 12px;">
+              <span style="color: var(--accent);">■</span>
+              <span><strong>Aggressive Marketing:</strong> Utilizing V-Prai targeting across global markets.</span>
+            </li>
+            <li style="margin-bottom: 16px; display: flex; gap: 12px;">
+              <span style="color: var(--accent);">■</span>
+              <span><strong>Content Scale:</strong> Minimum 36 distinct social media posts and clips.</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="finance-block">
+          <p class="mono-tag" style="color: var(--ink);">Project Financials</p>
+          <div class="val-sub">✓ Initial Session Paid: $1,000.00</div>
+          
+          <div style="margin-top: 32px;">
+            <div class="val-main">$9,000.00</div>
+            <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 32px;">V-Prai Marketing & Scale Package</p>
+          </div>
+          
+          <div style="border-top: 1px dashed var(--line-strong); padding-top: 32px;">
+            <div class="val-main" style="color: var(--ink);">$10,000.00</div>
+            <p style="font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;">Total Production Value</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: VRL ECOSYSTEM EXPLANATION -->
+  <section class="slide" id="slide-3">
+    <div class="slide-inner">
+      <div class="mono-tag">02. Proprietary Technology</div>
+      <h2>The VRL & Visio Ecosystem</h2>
+      <p class="lead">All marketing outreach is powered by our closed-loop technology stack. We don't guess—we resolve exact targets, automate outreach, and measure valuation.</p>
+      
+      <div class="image-container" style="margin-bottom: 48px;">
+        <img src="assets/vrl_ecosystem.jpg" alt="VRL Digital Ecosystem Representation">
+      </div>
+      
+      <div class="grid-3">
+        <div class="tech-card">
+          <h3>V-Prai (Lead-Gen)</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 12px;">Resolves the exact humans to reach across 137 routes and 12 verticals (playlist curators, DJs, press).</p>
+        </div>
+        <div class="tech-card">
+          <h3>VisioPitch</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 12px;">The delivery engine. Builds the specialized pitch and executes highly-targeted outreach at massive scale.</p>
+        </div>
+        <div class="tech-card">
+          <h3>VRL Echo</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 12px;">The data layer that tracks valuation, monitoring the ecosystem and verifying exactly what the pitches returned.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: TARGETING BREAKDOWN -->
+  <section class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="mono-tag">03. The V-Prai Strategy</div>
+      <h2>Target Marketing Allocation</h2>
+      <p class="lead">How the $9,000 marketing scale budget is deployed through our ecosystem to maximize reach.</p>
+      
+      <div class="grid-2" style="margin-bottom: 40px; align-items: stretch;">
+        <div class="image-container">
+          <img src="assets/v_prai_targeting.jpg" alt="V-Prai Global Targeting Radar" style="height: 100%; object-fit: cover;">
+        </div>
+        
+        <div style="background: var(--surface-hover); padding: 32px; border-radius: var(--r); border: 1px solid var(--line);">
+          <h3 style="font-size: 18px; margin-bottom: 24px;">The 10-20% Baseline</h3>
+          <p style="font-size: 15px; color: var(--ink-soft); margin-bottom: 24px;">
+            We do not rely on "bot farms" or guaranteed empty clicks. Every placement is hard-pitched using <strong>VisioPitch</strong>.
+          </p>
+          <p style="font-size: 15px; color: var(--ink-soft);">
+            Our ecosystem consistently yields a <strong>10% - 20% minimum engagement rate</strong>. This translates our massive global reach into high-quality, verified industry engagement.
+          </p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Network Reach</th>
+            <th>Expected Value (10-20% Target)</th>
+            <th>Budget</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Radio Plugging</td>
+            <td>30,000+ stations</td>
+            <td><div class="kpi-text"><b>Engagement</b>Automated target pitching; expect ~40-50 regional playlist adds.</div></td>
+            <td>$1,500.00</td>
+          </tr>
+          <tr>
+            <td>Touring DJ's</td>
+            <td>4,000+ targeted DJ's</td>
+            <td><div class="kpi-text"><b>Engagement</b>Direct pitch via V-Prai; early club support metrics tracked.</div></td>
+            <td>$1,000.00</td>
+          </tr>
+          <tr>
+            <td>Niche Creators</td>
+            <td>Curated TikTok/Reels profiles</td>
+            <td><div class="kpi-text"><b>Uptake</b>Expected ~10-15 solid UGC videos matching sonic profile.</div></td>
+            <td>$1,000.00</td>
+          </tr>
+          <tr>
+            <td>Media (Journalists)</td>
+            <td>900+ Verified Publications</td>
+            <td><div class="kpi-text"><b>Engagement</b>Expecting 9-10 published articles/write-ups.</div></td>
+            <td>$1,000.00</td>
+          </tr>
+          <tr>
+            <td>Social Media Pages</td>
+            <td>110+ high-traffic dance pages</td>
+            <td><div class="kpi-text"><b>Organic Boost</b>Pitched placements yielding ~250k+ potential impressions.</div></td>
+            <td>$1,000.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: DELIVERABLES -->
+  <section class="slide" id="slide-5">
+    <div class="slide-inner">
+      <div class="mono-tag">04. Deliverables & Pipeline</div>
+      <h2>Release & Content Pack</h2>
+      <p class="lead">Beyond the V-Prai strategy, this outlines the hard deliverables required to scale the release.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Details</th>
+            <th>Client Expectations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Full DSP Release</td>
+            <td>Spotify, Apple Music, Global Networks</td>
+            <td><div class="kpi-text">Track uploaded, claimed, and pitched to editorial playlists</div></td>
+          </tr>
+          <tr>
+            <td>Artwork</td>
+            <td>Included (X)</td>
+            <td><div class="kpi-text">2 Revisions + Final High-Res Delivery</div></td>
+          </tr>
+          <tr>
+            <td>Content Clipping</td>
+            <td>Content Scaling ($1,500 Budget)</td>
+            <td><div class="kpi-text">36 optimized short-form clips extracted, delivered and posted</div></td>
+          </tr>
+          <tr>
+            <td>Dancer Choreo</td>
+            <td>Targeted seeding to 10k dancers ($1,000 Budget)</td>
+            <td><div class="kpi-text">Targeted choreo seeding to prompt 5 core viral challenge attempts</div></td>
+          </tr>
+          <tr>
+            <td>Fan Page Support</td>
+            <td>x5 Sponsored Pages ($1,000 Budget)</td>
+            <td><div class="kpi-text">Sponsored pages expected to drive 50,000+ clicks to DSPs</div></td>
+          </tr>
+          <tr>
+            <td>Included In YouTube Mix</td>
+            <td>Live Mix Feature</td>
+            <td><div class="kpi-text">Inclusion in 1 high-visibility DJ mix</div></td>
+          </tr>
+          <tr>
+            <td>Press Kit</td>
+            <td>Full PR Writeup Included</td>
+            <td><div class="kpi-text">EPK Delivered (PDF + Digital Link)</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: TIMELINE & TERMS -->
+  <section class="slide" id="slide-6">
+    <div class="slide-inner">
+      <div class="mono-tag">05. Execution</div>
+      <h2>Timeline & Terms</h2>
+      
+      <div class="grid-3" style="margin-top: 48px;">
+        <div style="border-top: 3px solid var(--accent); padding-top: 24px;">
+          <div class="mono-tag" style="margin-bottom: 8px;">Phase 1</div>
+          <h3 style="font-size: 18px;">Prep & Ingestion</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 8px;"><strong>Weeks 1-2</strong><br>Preparation, asset collation, artwork revisions, and delivery to DSPs.</p>
+        </div>
+        <div style="border-top: 3px solid var(--line-strong); padding-top: 24px;">
+          <div class="mono-tag" style="margin-bottom: 8px; color: var(--ink-soft);">Phase 2</div>
+          <h3 style="font-size: 18px;">V-Prai Pitching</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 8px;"><strong>Weeks 2-4</strong><br>Target validation and automated execution of the VisioPitch sequence to networks.</p>
+        </div>
+        <div style="border-top: 3px solid var(--line-strong); padding-top: 24px;">
+          <div class="mono-tag" style="margin-bottom: 8px; color: var(--ink-soft);">Phase 3</div>
+          <h3 style="font-size: 18px;">Peak Engagement</h3>
+          <p style="font-size: 14px; color: var(--ink-soft); margin-top: 8px;"><strong>Weeks 4-6</strong><br>Peak engagement tracking, media publishing, social rollout, and VRL valuation reporting.</p>
+        </div>
+      </div>
+
+      <div class="terms">
+        <strong style="color: var(--ink); font-size: 14px; font-family: var(--font-display);">Terms & Conditions</strong>
+        <ol>
+          <li>All outlined expected values and engagements (10-20%) are estimates based on the historical performance of VRL tools; they are not legally binding guarantees.</li>
+          <li>The client retains full approval of all visual assets prior to the V-Prai pitching phase.</li>
+          <li>Timelines are subject to change based on DSP ingestion delays and final asset delivery.</li>
+          <li>Marketing budgets must be cleared prior to the initiation of the VisioPitch sequence.</li>
+        </ol>
+      </div>
+
+      <div style="margin-top: 80px; text-align: center; font-family: var(--font-display); font-weight: 700; color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase;">
+        Touchline Agency // VRL Maps
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
