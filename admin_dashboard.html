@@ -297,23 +297,23 @@
       </div>
       
       <!-- Paid: 1700 / 250000 = 0.68% -->
-      <!-- Pipeline: 49800 / 250000 = 19.92% -->
-      <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($49,800)">
+      <!-- Pipeline: 51800 / 250000 = 20.72% -->
+      <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($51,800)">
         <div class="progress-fill-paid" style="width: 0.68%;"></div>
-        <div class="progress-fill-pipeline" style="width: 19.92%;"></div>
+        <div class="progress-fill-pipeline" style="width: 20.72%;"></div>
       </div>
       
       <div class="goal-stats">
         <span><strong>$1,700</strong> Closed / Paid</span>
-        <span><strong>$49,800</strong> Active Pipeline</span>
-        <span><strong>$198,500</strong> Remaining Gap</span>
+        <span><strong>$51,800</strong> Active Pipeline</span>
+        <span><strong>$196,500</strong> Remaining Gap</span>
       </div>
 
       <!-- Lead Forecasting Engine -->
       <div class="forecasting-engine">
         <div class="forecast-input">
           <label>Avg Value Per Lead ($)</label>
-          <input type="number" id="avgLeadValue" value="905" oninput="updateForecast()">
+          <input type="number" id="avgLeadValue" value="942" oninput="updateForecast()">
         </div>
         <div class="forecast-input">
           <label>Expected Close Rate (%)</label>
@@ -328,7 +328,7 @@
     
     <script>
       function updateForecast() {
-        const gap = 198500;
+        const gap = 196500;
         const avgVal = parseFloat(document.getElementById('avgLeadValue').value) || 1;
         const closeRate = (parseFloat(document.getElementById('closeRate').value) || 1) / 100;
         
@@ -341,7 +341,7 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-title">Total Active Pipeline</div>
-        <div class="metric-value">$49,800+</div>
+        <div class="metric-value">$51,800+</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">Closed / Paid</div>
@@ -353,7 +353,7 @@
       </div>
       <div class="metric-card">
         <div class="metric-title">Avg Lead Value</div>
-        <div class="metric-value">$905</div>
+        <div class="metric-value">$942</div>
       </div>
     </div>
 
@@ -481,8 +481,8 @@
           </tr>
           <tr>
             <td style="font-weight: 500;">Prince Amiri</td>
-            <td>$1,000</td>
-            <td><span class="badge badge-paid">Paid ✅</span></td>
+            <td>$3,000</td>
+            <td><span class="badge badge-paid">Paid $1k ✅</span> <span class="badge badge-pending" style="margin-left: 4px;">$2k Pending</span></td>
             <td>Fastest payer, paid in 20 mins from receiving links. This Client can spend up to $5000.00 | Long Term DRC Partner</td>
           </tr>
           <tr>
@@ -832,7 +832,7 @@
         <div class="kanban-col">
           <div class="kanban-col-header">Beat &amp; Arrangement (1)</div>
           <div class="kanban-card">
-            <div class="k-title">Prince Amiri - Verified ($1,000)</div>
+            <div class="k-title">Prince Amiri - Verified ($3,000)</div>
             <div class="k-assignee" style="color:var(--accent);">Producer 2</div>
             <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px solid #333; font-family:var(--font-mono); font-size:10px; color:#888;">
               <span style="color:#ff4444;">Fee: $100</span> | <span style="color:#0d9488;">Profit: $900</span>
@@ -1001,9 +1001,9 @@
             <div class="goal-title">30-Day Sprint Goal</div>
             <div class="goal-value">$250,000</div>
           </div>
-          <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($49,800)">
+          <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($51,800)">
             <div class="progress-fill-paid" style="width: 0.68%;"></div>
-            <div class="progress-fill-pipeline" style="width: 19.92%;"></div>
+            <div class="progress-fill-pipeline" style="width: 20.72%;"></div>
           </div>
         </div>
 
@@ -1014,8 +1014,8 @@
             <div class="goal-value" style="color: #0d9488;">$1,000,000</div>
           </div>
           <div class="progress-track" style="background: rgba(13, 148, 136, 0.1);" title="Current Total Pipeline / $1M">
-            <!-- 51500 / 1000000 = 5.15% -->
-            <div class="progress-fill-paid" style="width: 5.15%; background: #0d9488; box-shadow: 0 0 10px #0d9488;"></div>
+            <!-- 53500 / 1000000 = 5.35% -->
+            <div class="progress-fill-paid" style="width: 5.35%; background: #0d9488; box-shadow: 0 0 10px #0d9488;"></div>
           </div>
         </div>
       </div>
