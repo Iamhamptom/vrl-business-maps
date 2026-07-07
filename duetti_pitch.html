@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUETTING REMIXES - VRL Pitch</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap');
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-border: #222;
+      --ink: #e5e5e5;
+      --ink-dim: #999;
+      --accent: #0d9488;
+      --accent-glow: rgba(13, 148, 136, 0.2);
+      --danger: #ef4444;
+      --font-sans: 'Inter', sans-serif;
+      --font-display: 'Outfit', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 3rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 3rem;
+      border-bottom: 1px solid var(--surface-border);
+      position: relative;
+      background: linear-gradient(135deg, rgba(17,17,17,1) 0%, rgba(20,20,20,1) 100%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .pre-title {
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--ink-dim);
+    }
+
+    .content-body {
+      padding: 3rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #fff;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 0.5rem;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink-dim);
+    }
+
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--surface-border);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .value-highlight {
+      font-size: 2rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: #fff;
+      margin: 0.5rem 0;
+    }
+
+    .value-sub {
+      font-size: 0.9rem;
+      color: var(--ink-dim);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    th {
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255,255,255,0.03);
+    }
+
+    td {
+      color: var(--ink-dim);
+      vertical-align: top;
+    }
+
+    td:first-child {
+      color: #fff;
+      font-weight: 500;
+      width: 30%;
+    }
+
+    .footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--surface-border);
+      background: rgba(0,0,0,0.2);
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--ink-dim);
+    }
+
+    /* Print styles for PDF export */
+    @media print {
+      body {
+        background: #000; /* Force dark background even in print */
+        color: #fff;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .container {
+        border: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="pre-title">Prepared for Elliot / Duetti Project</div>
+      <h1>DUETTING REMIXES</h1>
+      <div class="subtitle"><strong>Executive Producer:</strong> Tony Duardo <br><strong>Artists:</strong> Al Xapo, Ciza</div>
+    </div>
+
+    <div class="content-body">
+      
+      <div class="grid-2">
+        <div>
+          <h2>Top 7 Selection</h2>
+          <ul>
+            <li>Sugar</li>
+            <li>Weh mi Duh</li>
+            <li>Attentat</li>
+            <li>Bae</li>
+            <li>Coucou</li>
+            <li>Bingo</li>
+            <li>Bad To the Bone</li>
+          </ul>
+        </div>
+        
+        <div class="box">
+          <div class="pre-title">Track Financials</div>
+          <div class="value-highlight" style="font-size: 1.25rem; color: var(--ink-dim); text-decoration: line-through;">$3,000.00 per track</div>
+          <div class="value-highlight" style="color: var(--accent);">$4,000.00</div>
+          <div class="value-sub">Target Value</div>
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--surface-border);">
+            <div class="value-highlight">$8,000.00</div>
+            <div class="value-sub">Total Financials</div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Release Pack</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>Full DSP Release</td>
+            <td colspan="2">Spotify, Apple Music</td>
+          </tr>
+          <tr>
+            <td>Artwork</td>
+            <td colspan="2">X</td>
+          </tr>
+          <tr>
+            <td>Possible Visualiser</td>
+            <td colspan="2" style="color: var(--accent);"><em>(Separate cost)</em></td>
+          </tr>
+          <tr>
+            <td>Social Media Pieces & Shorts</td>
+            <td colspan="2">
+              <strong style="color: #fff;">36 posts:</strong> Tik Tok, YouTube, Facebook, Instagram, X<br><br>
+              • Club show clip<br>
+              • Pre-Release Announcement + Leak
+            </td>
+          </tr>
+          <tr>
+            <td>Included In YouTube Mix</td>
+            <td colspan="2">Ciza Live Mix Feature (Ciza’s Palace)</td>
+          </tr>
+          <tr>
+            <td>Press Kit</td>
+            <td colspan="2">N/A</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top: 3rem;">Marketing: V-Prai + Pitch Builder</h2>
+      <p style="color: var(--ink-dim); margin-bottom: 1.5rem;">Target Marketing Budget: <strong>$8,000 per track</strong></p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Reach / Target</th>
+            <th>Allocated Budget</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Radio Plugging (auto plugging)</td>
+            <td>Per region (Over 30,000 stations worldwide)</td>
+            <td style="color: #fff;">$500 - $1,500.00</td>
+          </tr>
+          <tr>
+            <td>DJ's</td>
+            <td>Over 4,000 (Touring DJ's)</td>
+            <td style="color: #fff;">$1,000.00</td>
+          </tr>
+          <tr>
+            <td>Creators</td>
+            <td>Pitch to creators that match the record</td>
+            <td style="color: #fff;">$500.00</td>
+          </tr>
+          <tr>
+            <td>Dancers</td>
+            <td>10,000 dancers per territory</td>
+            <td style="color: #fff;">$500.00 (Targeted)</td>
+          </tr>
+          <tr>
+            <td>Media (Journalists In music)</td>
+            <td>Over 900 Publications worldwide pool</td>
+            <td style="color: #fff;">$500.00 (Targeted campaign)</td>
+          </tr>
+          <tr>
+            <td>Social media Pages (Pitch)</td>
+            <td>Over 110 dance music pages</td>
+            <td style="color: #fff;">$500.00 (Targeted campaign)</td>
+          </tr>
+          <tr>
+            <td>Clipping Budget</td>
+            <td>$1,000 - $2,000</td>
+            <td style="color: #fff;">$1,000.00</td>
+          </tr>
+          <tr>
+            <td>Fan Page (song pages)</td>
+            <td>$200 per page (30 days)</td>
+            <td style="color: #fff;">x5 - $1,000.00</td>
+          </tr>
+          <tr>
+            <td>Advanced (Bots protected ADS)</td>
+            <td>—</td>
+            <td style="color: #fff;">$1,000.00</td>
+          </tr>
+          <tr style="background: rgba(255,255,255,0.02); font-weight: 600;">
+            <td colspan="2" style="text-align: right; color: #fff;">Total Marketing Estimate:</td>
+            <td style="color: var(--accent);">$3,500 - $7,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    
+    <div class="footer">
+      Generated by VRL Business Maps &copy; 2026 Hampton Music
+    </div>
+  </div>
+
+</body>
+</html>
