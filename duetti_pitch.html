@@ -3,186 +3,221 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DUETTING REMIXES - VRL Pitch</title>
+  <title>VRL Pitch | DUETTING REMIXES</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap');
-
+    /* ============ VRL BRAND PACK ============
+       Light, precise, "verification made visible." Orange scanner line #FF6A00
+       is the SINGLE accent, never decoration. Space Grotesk display · Inter body
+       · JetBrains Mono labels. */
     :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --surface-border: #222;
-      --ink: #e5e5e5;
-      --ink-dim: #999;
-      --accent: #0d9488;
-      --accent-glow: rgba(13, 148, 136, 0.2);
-      --danger: #ef4444;
-      --font-sans: 'Inter', sans-serif;
-      --font-display: 'Outfit', sans-serif;
+      --bg: #ffffff; --ink: #0a0a0a; --ink-soft: #4a4a4a; --ink-faint: #888888;
+      --line: #e8e8e8; --line-strong: #cfcfcf;
+      --accent: #ff6a00; --accent-soft: #ff8533;
+      --surface: #ffffff; --surface-hover: #f6f6f6;
+      --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --r: 6px; 
+      --shadow: 0 1px 0 var(--line), 0 8px 24px rgba(10,10,10,.06);
     }
-
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    
     body {
       background-color: var(--bg);
       color: var(--ink);
-      font-family: var(--font-sans);
+      font-family: var(--font-body);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      padding: 3rem 1rem;
+      padding: 40px 20px;
     }
 
+    /* ---------- scanner line motif ---------- */
+    .scanner-line {
+      display: block; position: relative; width: 48px; height: 3px;
+      background: var(--accent); border-radius: 2px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .scanner-line::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 50%, transparent);
+      transform: translateX(-100%);
+      animation: sweep 2.8s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes sweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+
     .container {
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
       background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .header {
-      padding: 3rem;
-      border-bottom: 1px solid var(--surface-border);
-      position: relative;
-      background: linear-gradient(135deg, rgba(17,17,17,1) 0%, rgba(20,20,20,1) 100%);
+    header {
+      padding: 40px 40px 30px;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
     }
 
-    .header::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), transparent);
-    }
-
-    .pre-title {
-      font-family: var(--font-display);
+    .label, .mono {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 0.8rem;
+      color: var(--ink-faint);
+    }
+    
+    .label b {
       color: var(--accent);
-      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--ink);
     }
 
     h1 {
-      font-family: var(--font-display);
-      font-size: 3rem;
+      font-size: 36px;
       font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      color: var(--ink-dim);
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.5;
     }
 
-    .content-body {
-      padding: 3rem;
+    .content {
+      padding: 40px;
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 3rem;
+      gap: 32px;
+      margin-bottom: 40px;
     }
 
-    h2 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-      color: #fff;
-      border-bottom: 1px solid var(--surface-border);
-      padding-bottom: 0.5rem;
-    }
-
-    ul {
-      list-style-type: none;
-    }
-
+    ul { list-style: none; }
     ul li {
       position: relative;
-      padding-left: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: var(--ink-dim);
+      padding-left: 20px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--ink-soft);
     }
-
     ul li::before {
-      content: '→';
+      content: '■';
       position: absolute;
-      left: 0;
+      left: 0; top: 1px;
       color: var(--accent);
+      font-size: 10px;
     }
 
-    .box {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--surface-border);
-      padding: 1.5rem;
-      border-radius: 8px;
+    .finance-box {
+      border: 1px solid var(--line-strong);
+      padding: 24px;
+      border-radius: var(--r);
+      background: var(--surface-hover);
     }
 
-    .value-highlight {
-      font-size: 2rem;
+    .finance-box .label { margin-bottom: 12px; display: block; }
+    
+    .val-strike {
+      font-size: 16px;
+      color: var(--ink-faint);
+      text-decoration: line-through;
       font-family: var(--font-display);
+    }
+    
+    .val-main {
+      font-size: 32px;
       font-weight: 700;
-      color: #fff;
-      margin: 0.5rem 0;
+      font-family: var(--font-display);
+      color: var(--accent);
+      margin-bottom: 4px;
+      line-height: 1;
     }
 
-    .value-sub {
-      font-size: 0.9rem;
-      color: var(--ink-dim);
+    .val-total {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--line-strong);
     }
+    .val-total .val-main { color: var(--ink); font-size: 24px; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
+      margin-bottom: 40px;
+      font-size: 13px;
     }
 
     th, td {
-      padding: 1rem;
+      padding: 12px 16px;
       text-align: left;
-      border-bottom: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--line);
     }
 
     th {
-      font-weight: 600;
-      color: #fff;
-      background: rgba(255,255,255,0.03);
-    }
-
-    td {
-      color: var(--ink-dim);
-      vertical-align: top;
-    }
-
-    td:first-child {
-      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      background: var(--surface-hover);
       font-weight: 500;
-      width: 30%;
     }
+
+    td { color: var(--ink-soft); vertical-align: top; }
+    td:first-child { color: var(--ink); font-weight: 500; width: 35%; }
+    
+    .td-highlight { color: var(--accent) !important; font-weight: 600 !important; }
 
     .footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--surface-border);
-      background: rgba(0,0,0,0.2);
-      text-align: right;
-      font-size: 0.85rem;
-      color: var(--ink-dim);
+      padding: 24px 40px;
+      border-top: 1px solid var(--line);
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+
+    .vrl-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--ink);
+    }
+    .vrl-badge span { color: var(--accent); }
 
     /* Print styles for PDF export */
     @media print {
       body {
-        background: #000; /* Force dark background even in print */
-        color: #fff;
         padding: 0;
+        background: #fff;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -190,19 +225,24 @@
         border: none;
         box-shadow: none;
       }
+      .scanner-line::after { display: none; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="header">
-      <div class="pre-title">Prepared for Elliot / Duetti Project</div>
+    <header>
+      <div class="scanner-line"></div>
+      <div class="label" style="margin-bottom: 8px;">Target: <b>Elliot / Duetti Project</b></div>
       <h1>DUETTING REMIXES</h1>
-      <div class="subtitle"><strong>Executive Producer:</strong> Tony Duardo <br><strong>Artists:</strong> Al Xapo, Ciza</div>
-    </div>
+      <div class="subtitle">
+        <strong>Executive Producer:</strong> Tony Duardo <br>
+        <strong>Artists:</strong> Al Xapo, Ciza
+      </div>
+    </header>
 
-    <div class="content-body">
+    <div class="content">
       
       <div class="grid-2">
         <div>
@@ -218,14 +258,15 @@
           </ul>
         </div>
         
-        <div class="box">
-          <div class="pre-title">Track Financials</div>
-          <div class="value-highlight" style="font-size: 1.25rem; color: var(--ink-dim); text-decoration: line-through;">$3,000.00 per track</div>
-          <div class="value-highlight" style="color: var(--accent);">$4,000.00</div>
-          <div class="value-sub">Target Value</div>
-          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--surface-border);">
-            <div class="value-highlight">$8,000.00</div>
-            <div class="value-sub">Total Financials</div>
+        <div class="finance-box">
+          <span class="label">Financial Targets</span>
+          <div class="val-strike">$3,000.00 / track</div>
+          <div class="val-main">$4,000.00</div>
+          <div class="mono" style="margin-bottom: 4px;">Target Value Per Track</div>
+          
+          <div class="val-total">
+            <div class="val-main">$8,000.00</div>
+            <div class="mono">Total Target</div>
           </div>
         </div>
       </div>
@@ -235,37 +276,39 @@
         <tbody>
           <tr>
             <td>Full DSP Release</td>
-            <td colspan="2">Spotify, Apple Music</td>
+            <td>Spotify, Apple Music</td>
           </tr>
           <tr>
             <td>Artwork</td>
-            <td colspan="2">X</td>
+            <td>Included (X)</td>
           </tr>
           <tr>
             <td>Possible Visualiser</td>
-            <td colspan="2" style="color: var(--accent);"><em>(Separate cost)</em></td>
+            <td class="td-highlight">(Separate cost)</td>
           </tr>
           <tr>
             <td>Social Media Pieces & Shorts</td>
-            <td colspan="2">
-              <strong style="color: #fff;">36 posts:</strong> Tik Tok, YouTube, Facebook, Instagram, X<br><br>
-              • Club show clip<br>
-              • Pre-Release Announcement + Leak
+            <td>
+              <strong style="color: var(--ink);">36 posts:</strong> Tik Tok, YouTube, Facebook, Instagram, X<br><br>
+              <div style="padding-left: 8px; border-left: 2px solid var(--line-strong); margin-top: 8px;">
+                • Club show clip<br>
+                • Pre-Release Announcement + Leak
+              </div>
             </td>
           </tr>
           <tr>
             <td>Included In YouTube Mix</td>
-            <td colspan="2">Ciza Live Mix Feature (Ciza’s Palace)</td>
+            <td>Ciza Live Mix Feature (Ciza’s Palace)</td>
           </tr>
           <tr>
             <td>Press Kit</td>
-            <td colspan="2">N/A</td>
+            <td>N/A</td>
           </tr>
         </tbody>
       </table>
 
-      <h2 style="margin-top: 3rem;">Marketing: V-Prai + Pitch Builder</h2>
-      <p style="color: var(--ink-dim); margin-bottom: 1.5rem;">Target Marketing Budget: <strong>$8,000 per track</strong></p>
+      <h2>V-Prai + Pitch Builder</h2>
+      <div class="mono" style="margin-bottom: 16px;">Target Marketing Budget: <b>$8,000 per track</b></div>
       
       <table>
         <thead>
@@ -279,51 +322,51 @@
           <tr>
             <td>Radio Plugging (auto plugging)</td>
             <td>Per region (Over 30,000 stations worldwide)</td>
-            <td style="color: #fff;">$500 - $1,500.00</td>
+            <td style="color: var(--ink); font-weight: 500;">$500 - $1,500.00</td>
           </tr>
           <tr>
             <td>DJ's</td>
             <td>Over 4,000 (Touring DJ's)</td>
-            <td style="color: #fff;">$1,000.00</td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Creators</td>
             <td>Pitch to creators that match the record</td>
-            <td style="color: #fff;">$500.00</td>
+            <td style="color: var(--ink); font-weight: 500;">$500.00</td>
           </tr>
           <tr>
             <td>Dancers</td>
             <td>10,000 dancers per territory</td>
-            <td style="color: #fff;">$500.00 (Targeted)</td>
+            <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
             <td>Media (Journalists In music)</td>
             <td>Over 900 Publications worldwide pool</td>
-            <td style="color: #fff;">$500.00 (Targeted campaign)</td>
+            <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
             <td>Social media Pages (Pitch)</td>
             <td>Over 110 dance music pages</td>
-            <td style="color: #fff;">$500.00 (Targeted campaign)</td>
+            <td style="color: var(--ink); font-weight: 500;">$500.00 (Targeted)</td>
           </tr>
           <tr>
             <td>Clipping Budget</td>
             <td>$1,000 - $2,000</td>
-            <td style="color: #fff;">$1,000.00</td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
           <tr>
             <td>Fan Page (song pages)</td>
             <td>$200 per page (30 days)</td>
-            <td style="color: #fff;">x5 - $1,000.00</td>
+            <td style="color: var(--ink); font-weight: 500;">x5 - $1,000.00</td>
           </tr>
           <tr>
             <td>Advanced (Bots protected ADS)</td>
             <td>—</td>
-            <td style="color: #fff;">$1,000.00</td>
+            <td style="color: var(--ink); font-weight: 500;">$1,000.00</td>
           </tr>
-          <tr style="background: rgba(255,255,255,0.02); font-weight: 600;">
-            <td colspan="2" style="text-align: right; color: #fff;">Total Marketing Estimate:</td>
-            <td style="color: var(--accent);">$3,500 - $7,000</td>
+          <tr style="background: var(--surface-hover);">
+            <td colspan="2" style="text-align: right; font-weight: 600;">Total Marketing Estimate:</td>
+            <td class="td-highlight" style="font-size: 14px;">$3,500 - $7,000</td>
           </tr>
         </tbody>
       </table>
@@ -331,7 +374,8 @@
     </div>
     
     <div class="footer">
-      Generated by VRL Business Maps &copy; 2026 Hampton Music
+      <div class="vrl-badge">VRL<span>MAPS</span></div>
+      <div class="mono">Generated 2026 // Hampton Music</div>
     </div>
   </div>
 
