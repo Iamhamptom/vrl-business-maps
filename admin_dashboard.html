@@ -258,50 +258,89 @@
       </div>
     </div>
 
-    <!-- Decode Client Code Section -->
-    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow); display:flex; gap:1rem; align-items:center;">
-      <div style="flex:1;">
-        <h3 style="font-size:1.1rem; margin-bottom:0.25rem;">Decode Client Transmission</h3>
-        <p style="font-size:0.9rem; color:var(--ink-faint);">Paste the VRL-CODE from WhatsApp to instantly generate their architecture map.</p>
+    <!-- PROPOSAL & MUSIC DEMO GENERATOR -->
+    <div style="background: var(--surface); border: 1px solid var(--accent); border-radius: var(--r); padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(255,106,0,0.1);">
+      <h3 style="font-size:1.2rem; margin-bottom:0.25rem; font-family: var(--font-display); color: var(--accent);">Generate Client Proposal & Demo Link</h3>
+      <p style="font-size:0.9rem; color:var(--ink-faint); margin-bottom: 1rem;">Package your Music Demo & Services Deck. Generate a secure VRL link to send via Instagram DM.</p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Client Name</label>
+          <input type="text" id="prop-name" placeholder="e.g. Major League DJz" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 4px;">
+        </div>
+        <div>
+          <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Target Role</label>
+          <input type="text" id="prop-role" placeholder="e.g. International DJ Duo" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 4px;">
+        </div>
+        <div>
+          <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Offer / Package Price ($)</label>
+          <input type="number" id="prop-price" placeholder="e.g. 5000" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 4px;">
+        </div>
+        <div>
+          <label style="display:block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 4px;">Music Demo Link (Optional)</label>
+          <input type="text" id="prop-demo" placeholder="e.g. https://soundcloud.com/..." style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 4px;">
+        </div>
       </div>
-      <div style="display:flex; gap:0.5rem; flex:2;">
-        <input type="text" id="vrlCodeInput" placeholder="VRL-..." style="flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:4px; font-family:var(--font-mono); font-size:14px;">
-        <button onclick="decodeClientCode()" style="background:var(--ink); color:white; border:none; padding:10px 20px; border-radius:4px; font-weight:600; cursor:pointer; font-family:var(--font-display);">Decode &amp; Generate</button>
+      <button onclick="generateProposalLink()" style="background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:4px; font-weight:bold; cursor:pointer; font-family:var(--font-mono); width: 100%; text-transform: uppercase; letter-spacing: 0.1em;">Generate Secure Link</button>
+      
+      <div id="prop-result" style="display:none; margin-top: 1rem;">
+        <label style="display:block; font-size: 11px; text-transform: uppercase; color: #0d9488; margin-bottom: 4px;">Success! Copy to Clipboard & Send in DM:</label>
+        <input type="text" id="prop-url" readonly onclick="this.select(); document.execCommand('copy'); alert('Copied to clipboard!');" style="width: 100%; background: #000; border: 1px solid #0d9488; color: #0d9488; padding: 10px; border-radius: 4px; font-family: var(--font-mono); cursor: pointer;">
       </div>
     </div>
+    
     <script>
-      function decodeClientCode() {
-        const input = document.getElementById('vrlCodeInput').value.trim();
-        if(!input.startsWith('VRL-')) {
-          alert('Invalid code format. Code must start with VRL-');
-          return;
-        }
+      function generateProposalLink() {
+        const name = document.getElementById('prop-name').value || 'Valued Client';
+        const role = document.getElementById('prop-role').value || 'Artist / DJ';
+        const price = document.getElementById('prop-price').value || '2500';
+        const demo = document.getElementById('prop-demo').value || '';
         
-        try {
-          const base64 = input.substring(4);
-          const jsonStr = atob(base64);
-          // Test parse to ensure it's valid
-          JSON.parse(jsonStr);
-          window.location.href = 'proposal.html?data=' + encodeURIComponent(base64);
-        } catch (e) {
-          alert('Error decoding client transmission. The code may be corrupted.');
-        }
+        const payload = {
+          clientName: name,
+          targetRole: role,
+          basePrice: parseInt(price),
+          demoLink: demo,
+          date: new Date().toISOString()
+        };
+        
+        const jsonStr = JSON.stringify(payload);
+        const base64 = btoa(jsonStr);
+        // Assuming hosting on github pages or local
+        const baseUrl = window.location.href.replace('admin_dashboard.html', 'proposal.html');
+        const finalUrl = `${baseUrl}?data=${encodeURIComponent(base64)}`;
+        
+        document.getElementById('prop-result').style.display = 'block';
+        document.getElementById('prop-url').value = finalUrl;
       }
     </script>
 
-    <!-- 30 DAY $250K GOAL TRACKER -->
-    <div class="goal-panel">
-      <div class="goal-header">
-        <div class="goal-title">30-Day Mission: Goal Tracker</div>
-        <div class="goal-value">$250,000</div>
+    <!-- MEGA GOALS TRACKER -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+      <!-- 30 DAY $250K SPRINT -->
+      <div class="goal-panel" style="margin-bottom: 0;">
+        <div class="goal-header">
+          <div class="goal-title">30-Day Sprint Goal</div>
+          <div class="goal-value">$250,000</div>
+        </div>
+        <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($32,800)">
+          <div class="progress-fill-paid" style="width: 0.68%;"></div>
+          <div class="progress-fill-pipeline" style="width: 13.12%;"></div>
+        </div>
       </div>
-      
-      <!-- Paid: 1700 / 250000 = 0.68% -->
-      <!-- Pipeline: 32800 / 250000 = 13.12% -->
-      <div class="progress-track" title="Green: Paid ($1,700), Orange: Pipeline ($32,800)">
-        <div class="progress-fill-paid" style="width: 0.68%;"></div>
-        <div class="progress-fill-pipeline" style="width: 13.12%;"></div>
+
+      <!-- 4-MONTH $1M FLOOR -->
+      <div class="goal-panel" style="margin-bottom: 0; background: rgba(13, 148, 136, 0.05); border-color: #0d9488;">
+        <div class="goal-header">
+          <div class="goal-title" style="color: #0d9488;">4-Month Mega Goal (The Floor)</div>
+          <div class="goal-value" style="color: #0d9488;">$1,000,000</div>
+        </div>
+        <div class="progress-track" style="background: rgba(13, 148, 136, 0.1);" title="Current Total Pipeline / $1M">
+          <!-- 34500 / 1000000 = 3.45% -->
+          <div class="progress-fill-paid" style="width: 3.45%; background: #0d9488; box-shadow: 0 0 10px #0d9488;"></div>
+        </div>
       </div>
+    </div>
       
       <div class="goal-stats">
         <span><strong>$1,700</strong> Closed / Paid</span>

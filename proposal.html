@@ -956,21 +956,59 @@ window.addEventListener('load', initAgent);
         const jsonStr = atob(dataBase64);
         const payload = JSON.parse(jsonStr);
         
-        // Hydrate Name
-        if (payload.name) {
+        // Handle name or clientName
+        const cName = payload.clientName || payload.name;
+        if (cName) {
           const userNameEl = document.querySelector('.user-name');
-          if(userNameEl) userNameEl.textContent = payload.name;
+          if(userNameEl) userNameEl.textContent = cName;
           
           const avatarEl = document.querySelector('.user-avatar');
           if(avatarEl) {
-            const initials = payload.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+            const initials = cName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
             avatarEl.textContent = initials;
           }
           
           const titleEl = document.querySelector('.t2');
           if(titleEl) {
-            titleEl.innerHTML = payload.name + ' Infrastructure Proposal';
+            titleEl.innerHTML = cName + ' Infrastructure Proposal';
           }
+          
+          // Update Welcome Modal
+          const wmBody = document.querySelector('.wm-body');
+          if (wmBody) {
+            wmBody.innerHTML = `
+              <p>Welcome, <strong>${cName}</strong>, to the <strong>VRL Business Map</strong>. This is not a standard presentation. It is a live, interactive architectural blueprint of your entire entertainment enterprise.</p>
+              <p>What you are about to see is the systemization of your brand into distinct pillars. We have mapped out exactly how data, revenue, and audience flow through your ecosystem.</p>
+              <p>This architecture is designed to transition you into a Founder—giving you the predictive models, AI tools, and infrastructure to scale your impact globally.</p>
+            `;
+          }
+        }
+        
+        // Handle Target Role
+        if (payload.targetRole) {
+          const roleEl = document.querySelector('.user-role');
+          if (roleEl) roleEl.textContent = payload.targetRole;
+        }
+
+        // Insert Music Demo Link into Header if provided
+        if (payload.demoLink) {
+          const header = document.querySelector('header');
+          const spacer = document.querySelector('.spacer');
+          if (header && spacer) {
+            const demoBtn = document.createElement('a');
+            demoBtn.href = payload.demoLink;
+            demoBtn.target = '_blank';
+            demoBtn.style = "background:black; color:white; padding:10px 18px; border-radius:6px; font-family:var(--font-mono); font-size:11px; text-decoration:none; font-weight:bold; letter-spacing:0.1em; text-transform:uppercase; transition:background 0.2s; border: 1px solid #333; margin-right: 1rem;";
+            demoBtn.innerHTML = "🎧 Listen to Demo";
+            demoBtn.onmouseover = () => demoBtn.style.background = '#333';
+            demoBtn.onmouseout = () => demoBtn.style.background = 'black';
+            header.insertBefore(demoBtn, spacer.nextSibling);
+          }
+        }
+        
+        // (Optional) Store price for future Pay Now integration
+        if (payload.basePrice) {
+          window.proposalBasePrice = payload.basePrice;
         }
         
       } catch (e) {
